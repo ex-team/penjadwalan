@@ -1,10 +1,85 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+ini_set('max_execution_time', 0);
+// set_error_handler("var_dump");
+
+class Algoritma_pso {
+    var $CI;
+    var $populasi = [];
+    var $pc = null;
+    var $pm = null;
+    var $kelas = null;
+    var $ruang = null;
+    var $waktu = null;
+    var $timespace = null;
+    var $post = null;
+	var $prodi = null;
+    var $min_prosen_capacity = null;
+
+    public function __construct()
+    {
+        $this->CI = &get_instance(); // for accessing the model of CI later
+		$this->CI->load->library('bantu');
+        $this->CI->load->library('aturan_jadwal');
+    }
+
+	/*
+    Outline of the Basic Genetic Algorithm
+	[Start] Generate random population of n chromosomes (suitable solutions for the problem)
+    [Fitness] Evaluate the fitness f(x) of each chromosome x in the population
+    [New population] Create a new population by repeating following steps until the new population is complete
+    [Accepting] Place new offspring in a new population 
+    [Replace] Use new generated population for a further run of algorithm
+    [Test] If the end condition is satisfied, stop, and return the best solution in current population
+    [Loop] Go to step 2 
+    */
+
+	// Inisialisasi partikel
+	public function initialize($kelas, $ruang, $waktu, $post, $prodi, $min_prosen_capacity){
+        $this->kelas = $kelas;
+        $this->ruang = $ruang;
+        $this->waktu = $waktu;
+        $this->post = $post;
+        $this->pc = $post['pc'];
+        $this->pm = $post['pm'];
+        $this->prodi = $prodi;
+        $this->min_prosen_capacity = $min_prosen_capacity;
+
+        /*menginisiasi matriks timespace yg berisi ruang, hari, dan jam*/
+        $i = 0;
+        foreach ($this->ruang as $key => $value) {
+            foreach ($this->waktu as $a => $item) {
+                $this->timespace[] = array(
+                    'id_timespace' => $i++,
+                    'id_ruang' => $value['ru_id'],
+                    'id_waktu' => $item['waktu_id'],
+                    'waktu_hari' => $item['waktu_hari'],
+                    'waktu_jam_mulai' => $item['waktu_jam_mulai'],
+                    'label' => $value['ru_nama'].', '.$item['waktu_hari'].' '.$item['waktu_jam_mulai'].'-',
+                    'kap_ruang' => $value['ru_kapasitas'],
+                    'status' => '',
+                    'status_nested' => ''
+                );
+            }
+        }
+    }
+
+	// Evaluasi Fitnes berdasarkan posisi
+	// 
+	// 
+	// Update nilai partikel dan kecepatan (velocity)
+	// 
+	// 
+	// Update posisi
+	// 
+	// 
+	// Evaluasi Fitnes setiap partikel
+
+
+}
 
 class PSO extends CI_Model {
-
-// inisialisasi partikel setiap variabel   //
-
+	// inisialisasi partikel setiap variabel   //
 	function inisialisasi_partikel()
 	{
 
@@ -45,11 +120,11 @@ class PSO extends CI_Model {
 
 
 
-// inisialisasi kecepatan   //
+			// inisialisasi kecepatan   //
 			$query="UPDATE tbl_fitnes set velocity=id_slot";
 			$fit = mysql_query($query);
 
-// Evaluasi fitness semua partikel   //
+			// Evaluasi fitness semua partikel   //
 	
 			$sqlss = "SELECT id_slot, id_hari, id_jam, id_guru_mengajar, id_guru, id_mapel, id_ruang FROM slot_jadwal order by id_slot desc";
 			$ts=mysql_query($sqlss);
@@ -87,7 +162,7 @@ class PSO extends CI_Model {
 			
 
 
-//update nilai terbaik partikel   //
+			//update nilai terbaik partikel   //
 	
 			$sqll = "SELECT min(fitnes) FROM `tbl_fitnes`WHERE fitnes !=0 ";
 			$l=mysql_query($sqll);
@@ -102,7 +177,7 @@ class PSO extends CI_Model {
 			}
 			}
 
-// update velocity   //
+			// update velocity   //
 	
 			$rnd=$n[rand(0,99)];
 			//cek velocity
@@ -116,7 +191,7 @@ class PSO extends CI_Model {
 			$cek_slot);
 			
 
-// update posisi     //
+			// update posisi     //
 	
 			$x=$cek_slot+$v;
 			$xi=round($x, 0);
@@ -126,7 +201,7 @@ class PSO extends CI_Model {
 			return $v;
 			
 
-// cek kriteria      //
+			// cek kriteria      //
 	
 			$sqlk = "SELECT min(fitnes) FROM tbl_fitnes a left join slot_jadwal b on a.id_slot=b.id_slot
 			WHERE b.id_mapel is not null and fitnes !=0";
@@ -137,5 +212,5 @@ class PSO extends CI_Model {
 			if($fet==null){
 				break;
 			}
-	}
-	
+		}
+}
