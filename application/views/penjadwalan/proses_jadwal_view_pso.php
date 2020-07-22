@@ -2,11 +2,11 @@
 	<h3>Proses Prediksi</h3>
 </div>
 
-<form class="form-horizontal form " action="<?=$url_submit?>" enctype="multipart/form-data" method="post">
+<form class="form-horizontal form " action="<?=$url_submit; ?>" enctype="multipart/form-data" method="post">
 	<div class="control-group">
 	  <label for="typeahead" class="control-label">Rule </label>
 	  <div class="controls">
-		<div class="alert alert-info"> 
+		<div class="alert alert-info">
 			<strong>Aturan Wajib (Hard Constraint): </strong>
 			<ol>
 				<li>Durasi kelas mata kuliah tidak lebih dari jam 17.20 pada hari yang sama.</li>
@@ -39,25 +39,17 @@
 	</div>
 
 	<div class="control-group">
-	  <label for="typeahead" class="control-label">Inertia Factor (W)</label>
+	  <label for="typeahead" class="control-label">Max Value</label>
 	  <div class="controls">
-		<input name="w" type="text" value="0.6" data-items="4" data-provide="typeahead" id="typeahead" class="span1 typeahead">
+		<input name="maxv" type="text" value="10" data-items="2" data-provide="typeahead" id="typeahead" class="span1 typeahead">
 		<!-- <p class="help-block">Start typing to activate auto complete!</p> -->
 	  </div>
 	</div>
 
 	<div class="control-group">
-	  <label for="typeahead" class="control-label">Self Confidence (C1)</label>
+	  <label for="typeahead" class="control-label">Min Value</label>
 	  <div class="controls">
-		<input name="c1" type="text" value="2" data-items="4" data-provide="typeahead" id="typeahead" class="span1 typeahead">
-		<!-- <p class="help-block">Start typing to activate auto complete!</p> -->
-	  </div>
-	</div>
-
-	<div class="control-group">
-	  <label for="typeahead" class="control-label">Swarm Confidence (C2)</label>
-	  <div class="controls">
-		<input name="c2" type="text" value="2" data-items="4" data-provide="typeahead" id="typeahead" class="span1 typeahead">
+		<input name="minv" type="text" value="-10" data-items="3" data-provide="typeahead" id="typeahead" class="span1 typeahead">
 		<!-- <p class="help-block">Start typing to activate auto complete!</p> -->
 	  </div>
 	</div>
@@ -73,7 +65,7 @@
 	<div class="form-actions">
 		<!-- <button class="btn btn-primary" type="submit">Cari</button> -->
 		<button class="btn btn-primary" type="submit">&nbsp; Proses PSO &nbsp;</button>
-		<a class="url_back" href="<?=$url_kelas?>"><button name="back" class="btn ">&nbsp; Back &nbsp;</button></a>
+		<a class="url_back" href="<?=$url_kelas; ?>"><button name="back" class="btn ">&nbsp; Back &nbsp;</button></a>
 	</div>
 
 </form>
@@ -83,8 +75,8 @@ $(document).ready(function(){
    // $('.layer_formation').inputmask("Regex", { regex: "([0-9][-])*[0-9]"});  //direct mask
    // $('.layer_formation').inputmask("mask", {"mask": "(999) 999-9999"}); //specifying fn & options
    // $('.layer_formation').inputmask({"mask": "99-9999999"}); //specifying options only
-   // $('.layer_formation').inputmask("9-a{1,3}9{1,3}"); //direct mask with dynamic syntax 
-   // $('.layer_formation').inputmask({ mask: ["999.999", "aa-aa-aa"]}); //direct mask with dynamic syntax 
+   // $('.layer_formation').inputmask("9-a{1,3}9{1,3}"); //direct mask with dynamic syntax
+   // $('.layer_formation').inputmask({ mask: ["999.999", "aa-aa-aa"]}); //direct mask with dynamic syntax
    // $("#layer_formation").inputmask("99-9999999");
 });
 </script>
