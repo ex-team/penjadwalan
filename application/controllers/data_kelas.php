@@ -67,8 +67,8 @@ class data_kelas extends CI_Controller {
     $this->load->view('ubah_kelas', $data);
     $this->load->view('v_footer');
   }
-
 }
+
 
 /* End of file Atribut.php */
 /* Location: ./application/controllers/Atribut.php */

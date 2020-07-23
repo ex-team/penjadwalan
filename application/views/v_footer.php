@@ -8,7 +8,7 @@
     <div class="float-right d-none d-sm-block">
       Developer by <b><a href="#">Istikomah</a></b>
     </div>
-    <strong>Copyright &copy; 2020 <a href="#">JADWAL-SMANCA</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2020 <a href="v_dashboard.php">JADWAL-SMANCA</a>.</strong> All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->

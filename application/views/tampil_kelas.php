@@ -23,9 +23,8 @@
                                 <td class="text-center"><?php echo $value["id_kelas"]; ?></td>
                                 <td class="text-center"><?php echo $value["nama_kelas"]; ?></td>
                                 <td class="text-center"><?php echo $value["password_kelas"]; ?></td>
-                            
                                 <td class="text-center">
-                                    <a href="<?php echo base_url("data_kelas    /ubah/".$value['id_kelas'])?>" class="btn btn-warning btn-sm">
+                                    <a href="<?php echo base_url("data_kelas/ubah/".$value['id_kelas'])?>" class="btn btn-warning btn-sm">
                                         <i class="fa fa-edit"></i>
                                     
                                     </a>

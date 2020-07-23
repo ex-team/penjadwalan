@@ -13,7 +13,7 @@
                 <table id="datatables" class="datatables table table-striped table-bordered">
                     <thead class="background_atribut">
                         <th class="text-center">Id Jam</th>
-                        <th class="text-center">Nama Jam</th>
+                        <th class="text-center">Jam</th>
                         <th class="text-center">Keterangan</th>
                         <th class="text-center">Action</th>
                     </thead>
@@ -45,7 +45,7 @@
                         if (flashdata != "")
                         {
                             Swal.fire({
-                                title: 'Data Mapel',
+                                title: 'Data Jam',
                                 text: flashdata,
                                 icon: flashdata.includes("berhasil") ? 'success' : 'error',
                                 confirmButtonClass: 'btn btn-primary',

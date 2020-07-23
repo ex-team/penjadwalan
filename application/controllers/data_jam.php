@@ -27,7 +27,7 @@ class data_jam extends CI_Controller {
     if ($inputan)
     {
       //a. model Matribut menjalankan method simpan (inputan)
-      $this->M_jam->simpan_mapel($inputan);
+      $this->M_jam->simpan_jam($inputan);
 
       //set flashdata sebagai pesan berhasil simpan
       $this->session->set_flashdata('pesan', 'Data Jam berhasil ditambahkan');

@@ -23,7 +23,7 @@
                         </div>
 
                             <button class="btn btn-primary" onclick="return confirm('Apakah Anda Yakin Untuk Mengubah Data Ini?')">Simpan</button>
-                           <a href="<?php echo base_url('data_guru') ?>" class="btn btn-danger">Cancel</a>
+                           <a href="<?php echo base_url('data_ruang') ?>" class="btn btn-danger">Cancel</a>
                 </form>
              </div>
           </div>

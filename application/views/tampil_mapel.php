@@ -5,7 +5,7 @@
                 <h3>Mapel</h3>
                     </div>
                     <div class="col-md-8 text-right">
-                        <a href="<?php echo base_url("data_kelas/tambah") ?>" class="btn btn-primary"><i class="fa fa-plus"></i>Tambah Mapel</a>
+                        <a href="<?php echo base_url("data_mapel/tambah") ?>" class="btn btn-primary"><i class="fa fa-plus"></i>Tambah Mapel</a>
                     </div>
                 </div>
             </div>

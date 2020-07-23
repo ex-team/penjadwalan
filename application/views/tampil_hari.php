@@ -5,7 +5,7 @@
                 <h3>Hari</h3>
                     </div>
                     <div class="col-md-8 text-right">
-                        <a href="<?php echo base_url("data_kelas/tambah") ?>" class="btn btn-primary"><i class="fa fa-plus"></i>Tambah Hari</a>
+                        <a href="<?php echo base_url("data_hari/tambah") ?>" class="btn btn-primary"><i class="fa fa-plus"></i>Tambah Hari</a>
                     </div>
                 </div>
             </div>

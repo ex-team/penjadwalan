@@ -43,6 +43,7 @@ class M_kelas extends CI_Model {
  		$this->db->update("kelas", $inputan);
  		
  	}
+
 }
 
 /* End of file Matribut.php */

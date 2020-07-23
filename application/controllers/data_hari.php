@@ -27,7 +27,7 @@ class data_hari extends CI_Controller {
     if ($inputan)
     {
       //a. model Matribut menjalankan method simpan (inputan)
-      $this->M_hari->simpan_mapel($inputan);
+      $this->M_hari->simpan_hari($inputan);
 
       //set flashdata sebagai pesan berhasil simpan
       $this->session->set_flashdata('pesan', 'Data hari berhasil ditambahkan');

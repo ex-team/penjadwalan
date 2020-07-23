@@ -11,7 +11,7 @@
         
               <label>Id Jam</label>
               <input type="text" class="form-control" name="id_jam">
-              <label>Nama Jam</label>
+              <label>Jam</label>
               <input type="text" class="form-control" name="nama_jam">
               <label>Keterangan</label>
               <input type="text" class="form-control" name="keterangan">
