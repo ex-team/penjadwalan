@@ -26,8 +26,8 @@
                             <tr>
                                 <td class="text-center"><?php echo $value["id_guru"]; ?></td>
                                 <td class="text-center"><?php echo $value["nama_guru"]; ?></td>
-                                <td class="text-center"><?php echo $value["NIP"]; ?></td>
                                 <td class="text-center"><?php echo $value["password_guru"]; ?></td>
+                                <td class="text-center"><?php echo $value["NIP"]; ?></td>
                                 <td class="text-center"><?php echo $value["Bidang"]; ?></td>
                                 <td class="text-center"><?php echo $value["id_mapel"]; ?></td>
                                 <td class="text-center">
