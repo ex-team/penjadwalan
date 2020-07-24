@@ -16,6 +16,7 @@ class Algoritma_pso
     public $populasi = [];
     public $c1 = null;
     public $c2 = null;
+    public $w = null;
     public $kelas = null;
     public $ruang = null;
     public $waktu = null;
@@ -46,13 +47,12 @@ class Algoritma_pso
     Outline of the Basic PSO Algorithm
 
     [Start] Generate random population of n particle (suitable solutions for the problem)
-    [Update] Update value Pbest, Gbest and Velocity for each particle
+    [Initialize] Velocity value is 0 or same as position of particle
     [Fitness] Evaluate the fitness f(x) of each particle x in the population
-    [New population] Create a new population by repeating following steps until the new population is complete
-    [Accepting] Place new offspring in a new population
-    [Replace] Use new generated population for a further run of algorithm
+    [Find] Find value Pbest, Gbest and Velocity for each particle
+    [Update] Check and update Velocity using formula then update Position Particle using new Velocity
     [Test] If the end condition is satisfied, stop, and return the best solution in current population
-    [Loop] Go to step 2
+    [Loop] Go to step 3
     */
 
     public function initialize($kelas, $ruang, $waktu, $post, $prodi, $min_prosen_capacity)
