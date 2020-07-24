@@ -1,5 +1,5 @@
 <div class="page-header">
-	<h3>Proses Prediksi</h3>
+	<h3>Proses Penjadwalan (Algoritma PSO)</h3>
 </div>
 
 <form class="form-horizontal form " action="<?=$url_submit; ?>" enctype="multipart/form-data" method="post">
@@ -39,17 +39,25 @@
 	</div>
 
 	<div class="control-group">
-	  <label for="typeahead" class="control-label">Max Value</label>
+	  <label for="typeahead" class="control-label">C1</label>
 	  <div class="controls">
-		<input name="maxv" type="text" value="10" data-items="2" data-provide="typeahead" id="typeahead" class="span1 typeahead">
+		<input name="c1" type="text" value="2" data-items="2" data-provide="typeahead" id="typeahead" class="span1 typeahead">
 		<!-- <p class="help-block">Start typing to activate auto complete!</p> -->
 	  </div>
 	</div>
 
 	<div class="control-group">
-	  <label for="typeahead" class="control-label">Min Value</label>
+	  <label for="typeahead" class="control-label">C2</label>
 	  <div class="controls">
-		<input name="minv" type="text" value="-10" data-items="3" data-provide="typeahead" id="typeahead" class="span1 typeahead">
+		<input name="c2" type="text" value="2" data-items="3" data-provide="typeahead" id="typeahead" class="span1 typeahead">
+		<!-- <p class="help-block">Start typing to activate auto complete!</p> -->
+	  </div>
+	</div>
+
+	<div class="control-group">
+	  <label for="typeahead" class="control-label">Inertial Weight</label>
+	  <div class="controls">
+		<input name="w" type="text" value="0.2" data-items="3" data-provide="typeahead" id="typeahead" class="span1 typeahead">
 		<!-- <p class="help-block">Start typing to activate auto complete!</p> -->
 	  </div>
 	</div>
@@ -57,7 +65,7 @@
 	<div class="control-group">
 	  <label for="typeahead" class="control-label">Jumlah Iterasi</label>
 	  <div class="controls">
-		<input name="generation" type="text" value="10" data-items="4" data-provide="typeahead" id="typeahead" class="span1 typeahead">
+		<input name="iteration" type="text" value="10" data-items="4" data-provide="typeahead" id="typeahead" class="span1 typeahead">
 		<!-- <p class="help-block">Start typing to activate auto complete!</p> -->
 	  </div>
 	</div>
