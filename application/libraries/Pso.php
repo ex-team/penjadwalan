@@ -10,7 +10,7 @@ for debugging you can go to check_on_hardrule() because when process fail
 it can be caused by that hardrule has not been passed especially room capacity.
 */
 
-class Algoritma_pso
+class Alpso
 {
     public $CI;
     public $populasi = [];
@@ -1175,7 +1175,7 @@ class Algoritma_pso
     public function set_log_proses()
     {
         $data = base64_encode(serialize($this->log_proses));
-        $sts = $this->CI->bantu->simpan_log_proses('algen_penjadwalan', $data);
+        $sts = $this->CI->bantu->simpan_log_proses('alpso_penjadwalan', $data);
 
         return $sts;
     }

@@ -23,7 +23,7 @@
 	<a href="<?=$url_proses_jadwal; ?>" <?=$display_buat_jadwal; ?>>
 		<button class="btn btn-success">Buat jadwal kuliah (Genetika)</button>
 	</a>
-	<a href="<?=$url_proses_jadwal; ?>" <?=$display_buat_jadwal; ?>>
+	<a href="<?=$url_proses_jadwal_pso; ?>" <?=$display_buat_jadwal; ?>>
 		<button class="btn btn-success">Buat jadwal kuliah (PSO)</button>
 	</a>
 	<a href="<?=$url_list_jadwal; ?>" <?=$display_list_jadwal; ?>>
