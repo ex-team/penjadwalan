@@ -1,264 +1,105 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Ruang_model extends CI_Model {
 
-    function __construct(){
-        // Call the Model constructor
-        parent::__construct();
-        // $this->load->database();
-    }
-
-
-    function get_count_ruang($filter){
-        if (is_array($filter))
-            extract($filter);
-        $str = '';
-
-        $query = '
-            SELECT count(ru_id) as total
-            FROM ruang ps
-            --search--
-        ';
-
-        $query = str_replace('--search--', $str, $query);
-
-        $ret = $this->db->query($query);
-        $val = $ret->result_array();
-
-        return $val[0]['total'];
-    }
-
-
-    function get_ruang($filter){
-        if (is_array($filter))
-            extract($filter);
-        $str = '';
-        
-        $limit = '';
-        if (!empty($display)) {
-            $limit = "LIMIT $start, $display";   
+	var $table = 'ruang';
+    var $column = array('nama_ruang','kapasitas_ruang'); //set column field database for order and search
+    var $order = array('nama_ruang' => 'desc'); // default order
+	public function __construct(){
+		parent::__construct();
+	}
+	private function _get_datatables_query(){
+        $this->db->select('*');
+        $this->db->from($this->table);
+        $i = 0;
+     
+        foreach ($this->column as $item) // loop column
+        {
+            if(isset($_POST['search']['value'])) // if datatable send POST for search
+            {
+                 
+                if($i===0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                }
+                else
+                {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+ 
+                if(count($this->column) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $column[$i] = $item; // set column array variable to order processing
+            $i++;
         }
-
-        $query = '
-            SELECT SQL_CALC_FOUND_ROWS
-                  `ru_id` AS id,
-                  `ru_kode` AS kode,
-                  `ru_nama` AS nama,
-                  `ru_kapasitas` AS kapasitas,
-                  ru_is_cadangan AS is_cad,
-                  IF(ru_is_cadangan=0,"","Cadangan") AS is_cad_label
-            FROM `ruang`
-            --search--
-            --limit--
-        ';
-
-        $query = str_replace('--search--', $str, $query);
-        $query = str_replace('--limit--', $limit, $query);
-
-        $ret = $this->db->query($query);
-        $ret = $ret->result_array();        
-
-        return $ret;
-    }
-
-  
-    function get_ruang_by_id($filter){
-        if (is_array($filter))
-            extract($filter);
-        $str = ''; 
-
-        if (!empty($id)) {
-            $str = "AND ru_id = $id";   
+         
+        if(isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($column[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
         }
-
-        $query = '
-            SELECT SQL_CALC_FOUND_ROWS
-                  `ru_id` AS id,
-                  `ru_kode` AS kode,
-                  `ru_nama` AS nama,
-                  `ru_kapasitas` AS kapasitas,
-                  ru_is_cadangan AS is_cad
-            FROM `ruang`
-            WHERE 1=1
-            --search--
-        ';
-
-        $query = str_replace('--search--', $str, $query);
-
-        $ret = $this->db->query($query);
-        $ret = $ret->result_array();        
-
-        return $ret[0];
-    }
-
-    function update_ruang($param){
-        if (is_array($param))
-            extract($param);
-
-        $sql = "
-            UPDATE `ruang`
-            SET
-                  `ru_kode` = ?,
-                  `ru_nama` = ?,
-                  `ru_kapasitas` = ?,
-                  `ru_is_cadangan` = ?
-            WHERE `ru_id` = ?
-        ";
-
-        return $this->db->query($sql, array($kode, $nama, $kapasitas, $is_cad, $id));
-    }
-
-    function add_ruang($param){
-        if (is_array($param))
-            extract($param);
-
-        $sql = "
-            INSERT INTO `ruang`
-            (`ru_kode`,`ru_nama`,`ru_kapasitas`, ru_is_cadangan)
-            VALUES (?,?,?,?)
-        ";
-
-        return $this->db->query($sql, array($kode, $nama, $kapasitas, $is_cad));
-    }
-
-    function del_ruang($param){
-        if (is_array($param))
-            extract($param);
-
-        $sql = "
-            DELETE FROM ruang
-            WHERE ru_id = ?
-        ";
-
-        return $this->db->query($sql, array($id)); 
-    }
-
-
-    function get_count_ruang_prodi($filter){
-        if (is_array($filter))
-            extract($filter);
-        $str = '';
-
-        $query = '
-            SELECT count(ru_id) as total
-            FROM ruang ps
-            --search--
-        ';
-
-        $query = str_replace('--search--', $str, $query);
-
-        $ret = $this->db->query($query);
-        $val = $ret->result_array();
-
-        return $val[0]['total'];
-    }
-
-
-    function get_ruang_prodi($filter){
-        if (is_array($filter))
-            extract($filter);
-        $str = '';
-        
-        $limit = '';
-        if (!empty($display)) {
-            $limit = "LIMIT $start, $display";   
+        else if(isset($this->order))
+        {
+            $order = $this->order;
+            $this->db->order_by(key($order), $order[key($order)]);
         }
-
-        $query = '
-            SELECT SQL_CALC_FOUND_ROWS
-                  `ru_id` AS id,
-                  `ru_kode` AS kode,
-                  `ru_nama` AS nama,
-                  `ru_kapasitas` AS kapasitas,
-                  ru_is_cadangan AS is_cad,
-                  IF(ru_is_cadangan=0,"","Cadangan") AS is_cad_label
-            FROM `ruang`
-            --search--
-            --limit--
-        ';
-
-        $query = str_replace('--search--', $str, $query);
-        $query = str_replace('--limit--', $limit, $query);
-
-        $ret = $this->db->query($query);
-        $ret = $ret->result_array();        
-
-        return $ret;
     }
-
-
-    function get_ruang_prodi_by_id($filter){
-        if (is_array($filter))
-            extract($filter);
-        $str = ''; 
-
-        if (!empty($id)) {
-            $str = "AND ru_id = $id";   
-        }
-
-        $query = '
-            SELECT SQL_CALC_FOUND_ROWS
-                  `ru_id` AS id,
-                  `ru_kode` AS kode,
-                  `ru_nama` AS nama,
-                  `ru_kapasitas` AS kapasitas,
-                  ru_is_cadangan AS is_cad
-            FROM `ruang`
-            WHERE 1=1
-            --search--
-        ';
-
-        $query = str_replace('--search--', $str, $query);
-
-        $ret = $this->db->query($query);
-        $ret = $ret->result_array();        
-
-        return $ret[0];
+     
+    function get_datatables(){
+    	$this->_get_datatables_query();
+        if(isset($_POST['length']) and $_POST['length']!= -1){
+            $this->db->limit($_POST['length'], $_POST['start']); 
+        }   	
+        $query = $this->db->get();
+        return $query->result_array();
     }
-
-    function update_ruang_prodi($param){
-        if (is_array($param))
-            extract($param);
-
-        $sql = "
-            UPDATE `ruang`
-            SET
-                  `ru_kode` = ?,
-                  `ru_nama` = ?,
-                  `ru_kapasitas` = ?,
-                  `ru_is_cadangan` = ?
-            WHERE `ru_id` = ?
-        ";
-
-        return $this->db->query($sql, array($kode, $nama, $kapasitas, $is_cad, $id));
+ 
+    function count_filtered(){
+        $this->_get_datatables_query();
+        $query = $this->db->get();
+        return $query->num_rows();
     }
-
-    function add_ruang_prodi($param){
-        if (is_array($param))
-            extract($param);
-
-        $sql = "
-            INSERT INTO `ruang`
-            (`ru_kode`,`ru_nama`,`ru_kapasitas`, ru_is_cadangan)
-            VALUES (?,?,?)
-        ";
-
-        return $this->db->query($sql, array($kode, $nama, $kapasitas,  $is_cad));
+ 
+    public function count_all(){
+        $this->db->from($this->table);
+        return $this->db->count_all_results();
     }
-
-    function del_ruang_prodi($param){
-        if (is_array($param))
-            extract($param);
-
-        $sql = "
-            DELETE FROM ruang_prodi
-            WHERE ru_id = ?
-        ";
-
-        return $this->db->query($sql, array($id)); 
+ 
+    public function get_by_id($id){
+        $this->db->from($this->table);
+        $this->db->where('id_ruang',$id);
+        $query = $this->db->get();
+ 
+        return $query->row();
     }
-
+    public function get_by_name($name){
+        $this->db->from($this->table);
+        $this->db->where('nama_ruang',$name);
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+    public function get_by_size($size){
+        $sql = 'select * from ruang where kapasitas_ruang >= ?';
+        $query = $this->db->query($sql,$size);
+ 
+        return $query->result_array();
+    }
+    public function save($data){
+        $this->db->insert($this->table, $data);
+        return $this->db->insert_id();
+    }
+ 
+    public function update($data){
+    	$this->db->where('id_ruang',$data['id_ruang']);
+        $this->db->update($this->table, $data);
+        return $this->db->affected_rows();
+    }
+ 
+    public function delete_by_id($id){
+        $this->db->where('id_ruang', $id);
+        $this->db->delete($this->table);
+    }
 }
-
 ?>

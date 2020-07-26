@@ -1,5 +1,4 @@
-## Sistem Informasi Penjadwalan Dengan Algoritma Berbasis Web
+Algoritma Genetika
 
-## Framework Codeigniter
-## Mysql Database
-## PHP 7*
+User: operator
+Pass: secret
