@@ -26,7 +26,7 @@
 		
 		<?php if($rs_dosen->num_rows() === 0):?>
 		<div class="alert alert-error">
-            <button type="button" class="close" data-dismiss="alert">ï¿½</button>             
+            <button type="button" class="close" data-dismiss="alert">×</button>             
 			Tidak ada data.
         </div>  
 		<?php else: ?> 
@@ -81,8 +81,8 @@
         <?php endif; ?>
          <footer>
             <hr />
-            <p class="pull-right">Design by <a href="http://nancodes.com" target="_blank">Nancodes</a></p>
-            <p>&copy; 2020 <a href="http://nancodes.com" target="_blank">Nancodes</a></p>
+            <p class="pull-right">Design by <a href="http://www.portnine.com" target="_blank">Portnine</a></p>
+            <p>&copy; 2012 <a href="http://www.portnine.com" target="_blank">Portnine</a></p>
          </footer>
       </div>
    </div>

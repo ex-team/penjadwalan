@@ -2,17 +2,20 @@
 
 class Web extends CI_Controller
 {
+
 	function __construct()
     {
         parent::__construct();
-		$this->load->library('session');
-		$this->load->model(array('m_dosen','m_matakuliah','m_ruang','m_jam','m_hari','m_pengampu','m_waktu_tidak_bersedia','m_jadwalkuliah'));
-		include_once("Genetik.php");
+		$this->load->model(array('m_dosen',
+								 'm_matakuliah',
+								 'm_ruang',
+								 'm_jam',
+								 'm_hari',
+								 'm_pengampu',
+								 'm_waktu_tidak_bersedia',
+								 'm_jadwalkuliah'));
+		include_once("genetik.php");
 		define('IS_TEST','FALSE');
-
-		// $this->load->helper('form');
-		// $this->load->library('form_validation');
-		// $this->load->library('pagination');
     }
 
 	function render_view($data)
@@ -33,7 +36,9 @@ class Web extends CI_Controller
 	
 /*********************************************************************************************/
 	function dosen(){
+		
 		$data = array();
+		
 		$data['page_title'] = 'Modul Dosen';		
 		$url = base_url() . 'web/dosen/';
         $res = $this->m_dosen->num_page();
@@ -54,6 +59,7 @@ class Web extends CI_Controller
         $this->m_dosen->sort = 'nama';
         $this->m_dosen->order = 'ASC';
         $data['rs_dosen'] = $this->m_dosen->get();
+		
 				
 		if ($this->input->post('ajax')) {			
 			$this->load->view('dosen_ajax',$data);			
@@ -69,10 +75,10 @@ class Web extends CI_Controller
 		
 		if(!empty($_POST)){
 
-			$this->form_validation->set_rules('nidn','NIDN');
-			$this->form_validation->set_rules('nama','Nama','required|is_unique[dosen.nama]');
-			$this->form_validation->set_rules('alamat','Alamat');			
-			$this->form_validation->set_rules('telp','Telephon');			
+			$this->form_validation->set_rules('nidn','NIDN','xss_clean');
+			$this->form_validation->set_rules('nama','Nama','xss_clean|required|is_unique[dosen.nama]');
+			$this->form_validation->set_rules('alamat','Alamat','xss_clean');			
+			$this->form_validation->set_rules('telp','Telephon','xss_clean');			
 
 			if($this->form_validation->run() == TRUE)
 			{
@@ -106,11 +112,13 @@ class Web extends CI_Controller
 	
 	function dosen_edit($kode){
 		$data = array();
+		
 		if(!empty($_POST)){
-			$this->form_validation->set_rules('nidn','NIDN','required');
-			$this->form_validation->set_rules('nama','Nama','required');
-			$this->form_validation->set_rules('alamat','Alamat');			
-			$this->form_validation->set_rules('telp','Telephon');			
+
+			$this->form_validation->set_rules('nidn','NIDN','xss_clean|required');
+			$this->form_validation->set_rules('nama','Nama','xss_clean|required');
+			$this->form_validation->set_rules('alamat','Alamat','xss_clean');			
+			$this->form_validation->set_rules('telp','Telephon','xss_clean');			
 
 			if($this->form_validation->run() == TRUE)
 			{
@@ -139,6 +147,7 @@ class Web extends CI_Controller
 	}
 	
 	function dosen_delete($kode){
+		
 		if(IS_TEST === 'FALSE'){
 			$this->m_dosen->delete($kode);
 			$this->m_pengampu->delete_by_kode_dosen($kode);
@@ -154,18 +163,23 @@ class Web extends CI_Controller
 	
 	
 	function dosen_search(){
+
 		$search_query = $this->input->post('search_query');
+
 		$data['rs_dosen'] = $this->m_dosen->get_search($search_query);
 		$data['page_title'] = 'Cari Dosen';
 		$data['page_name'] = 'dosen';	
 		$data['search_query'] = $search_query;
 		$data['start_number'] = 0;
+
 		$this->render_view($data);
 	}
 	
 /*********************************************************************************************/
+
 	function matakuliah(){
 		$data = array();
+		
 		$data['page_title'] = 'Modul Matakuliah';		
 		$url = base_url() . 'web/matakuliah/';
         $res = $this->m_matakuliah->num_page();
@@ -173,6 +187,7 @@ class Web extends CI_Controller
 
         $config = admin_paginate($url,$res,$per_page,3);
         $this->pagination->initialize($config);
+
         $this->m_matakuliah->limit = $per_page;
 
         if($this->uri->segment(3) == TRUE){
@@ -185,7 +200,8 @@ class Web extends CI_Controller
         $this->m_matakuliah->sort = 'jenis,nama';
         $this->m_matakuliah->order = 'ASC';
         $data['rs_mk'] = $this->m_matakuliah->get();
-			
+		
+				
 		if ($this->input->post('ajax')) {			
 			$this->load->view('matakuliah_ajax',$data);			
 		}else{			
@@ -196,12 +212,15 @@ class Web extends CI_Controller
 	
 	function matakuliah_add(){
 		$data = array();
+		
 		if(!empty($_POST)){
-			$this->form_validation->set_rules('kode_mk','Kode MK');
-			$this->form_validation->set_rules('nama','Nama','required|is_unique[matakuliah.nama]');
-			$this->form_validation->set_rules('sks','SKS','required|integer');			
-			$this->form_validation->set_rules('semester','Semester','required|integer');
-			$this->form_validation->set_rules('jenis','Jenis','required');
+
+			$this->form_validation->set_rules('kode_mk','Kode MK','xss_clean');
+			$this->form_validation->set_rules('nama','Nama','xss_clean|required|is_unique[matakuliah.nama]');
+			$this->form_validation->set_rules('sks','SKS','xss_clean|required|integer');			
+			$this->form_validation->set_rules('semester','Semester','xss_clean|required|integer');
+			$this->form_validation->set_rules('jenis','Jenis','xss_clean|required');
+
 			if($this->form_validation->run() == TRUE)
 			{
 				$data['kode_mk'] = $this->input->post('kode_mk');
@@ -237,11 +256,11 @@ class Web extends CI_Controller
 		
 		if(!empty($_POST)){
 
-			$this->form_validation->set_rules('kode_mk','Kode MK');
-			$this->form_validation->set_rules('nama','Nama','required');
-			$this->form_validation->set_rules('sks','SKS','required|integer');			
-			$this->form_validation->set_rules('semester','Semester','required|integer');
-			$this->form_validation->set_rules('jenis','Jenis','required');
+			$this->form_validation->set_rules('kode_mk','Kode MK','xss_clean');
+			$this->form_validation->set_rules('nama','Nama','xss_clean|required');
+			$this->form_validation->set_rules('sks','SKS','xss_clean|required|integer');			
+			$this->form_validation->set_rules('semester','Semester','xss_clean|required|integer');
+			$this->form_validation->set_rules('jenis','Jenis','xss_clean|required');
 			
 
 			if($this->form_validation->run() == TRUE)
@@ -284,7 +303,7 @@ class Web extends CI_Controller
 		}
 		
 		
-		redirect( base_url().'web/matakuliah','reload');
+		redirect(base_url() . 'web/matakuliah','reload');
 	}
 	
 	function matakuliah_search(){
@@ -325,9 +344,9 @@ class Web extends CI_Controller
 		if(!empty($_POST)){
 
 			//$this->form_validation->set_rules('kode','Kode MK','xss_clean');
-			$this->form_validation->set_rules('nama','Nama','required|is_unique[ruang.nama]');
-			$this->form_validation->set_rules('kapasitas','Kapasitas','integer');						
-			$this->form_validation->set_rules('jenis','Jenis','required');
+			$this->form_validation->set_rules('nama','Nama','xss_clean|required|is_unique[ruang.nama]');
+			$this->form_validation->set_rules('kapasitas','Kapasitas','xss_clean|integer');						
+			$this->form_validation->set_rules('jenis','Jenis','xss_clean|required');
 
 			if($this->form_validation->run() == TRUE)
 			{
@@ -364,9 +383,10 @@ class Web extends CI_Controller
 		if(!empty($_POST)){
 
 			//$this->form_validation->set_rules('kode','Kode MK','xss_clean');
-			$this->form_validation->set_rules('nama','Nama','required');
-			$this->form_validation->set_rules('kapasitas','Kapasitas','integer');			
-			$this->form_validation->set_rules('jenis','Jenis','required');
+			$this->form_validation->set_rules('nama','Nama','xss_clean|required');
+			$this->form_validation->set_rules('kapasitas','Kapasitas','xss_clean|integer');			
+			
+			$this->form_validation->set_rules('jenis','Jenis','xss_clean|required');
 
 			if($this->form_validation->run() == TRUE)
 			{
@@ -376,6 +396,7 @@ class Web extends CI_Controller
 				$data['jenis'] = $this->input->post('jenis');
 				
 				/*kode,nama,kapasitas,jenis*/
+				
 				if(IS_TEST === 'FALSE'){
 					$this->m_ruang->update($kode,$data);				
 					$data['msg'] = 'Data telah berhasil dirubah';	
@@ -439,7 +460,7 @@ class Web extends CI_Controller
 		
 		if(!empty($_POST)){
 
-			$this->form_validation->set_rules('range_jam','Range Jam','required|is_unique[jam.range_jam]');
+			$this->form_validation->set_rules('range_jam','Range Jam','xss_clean|required|is_unique[jam.range_jam]');
 			
 			if($this->form_validation->run() == TRUE)
 			{
@@ -471,7 +492,7 @@ class Web extends CI_Controller
 		
 		if(!empty($_POST)){
 
-			$this->form_validation->set_rules('range_jam','Range Jam','required');
+			$this->form_validation->set_rules('range_jam','Range Jam','xss_clean|required');
 			
 			if($this->form_validation->run() == TRUE)
 			{
@@ -539,7 +560,7 @@ class Web extends CI_Controller
 		
 		if(!empty($_POST)){
 
-			$this->form_validation->set_rules('nama','Nama Hari','required|is_unique[hari.nama]');
+			$this->form_validation->set_rules('nama','Nama Hari','xss_clean|required|is_unique[hari.nama]');
 			
 			if($this->form_validation->run() == TRUE)
 			{
@@ -572,7 +593,7 @@ class Web extends CI_Controller
 		
 		if(!empty($_POST)){
 
-			$this->form_validation->set_rules('nama','Nama Hari','required');
+			$this->form_validation->set_rules('nama','Nama Hari','xss_clean|required');
 			
 			if($this->form_validation->run() == TRUE)
 			{
@@ -627,7 +648,21 @@ class Web extends CI_Controller
 	
 /**************************************************************************/
 	function pengampu($semester_tipe = null,$tahun_akademik = null){
+		
 		$data = array();
+		
+		/*
+			jika null maka
+				jika session ada maka gunakan session
+				jika session null maka default
+			else
+				ubah session
+		*/
+		
+		//echo $this->session->userdata('pengampu_semester_tipe');
+		//echo $this->session->userdata('pengampu_tahun_akademik');
+		
+		
 		if(!$this->session->userdata('pengampu_semester_tipe') && !$this->session->userdata('pengampu_tahun_akademik')){
 			$this->session->set_userdata('pengampu_semester_tipe',1);
 			$this->session->set_userdata('pengampu_tahun_akademik','2011-2012');
@@ -691,11 +726,11 @@ class Web extends CI_Controller
 		
 		if(!empty($_POST)){
 
-		    $this->form_validation->set_rules('semester_tipe','Semester','required');
-			$this->form_validation->set_rules('kode_mk','Matakuliah','required');
-			$this->form_validation->set_rules('kode_dosen','Dosen','required');
-			$this->form_validation->set_rules('kelas','Kelas','required');
-			$this->form_validation->set_rules('tahun_akademik','Tahun Akademik','required');
+		    $this->form_validation->set_rules('semester_tipe','Semester','xss_clean|required');
+			$this->form_validation->set_rules('kode_mk','Matakuliah','xss_clean|required');
+			$this->form_validation->set_rules('kode_dosen','Dosen','xss_clean|required');
+			$this->form_validation->set_rules('kelas','Kelas','xss_clean|required');
+			$this->form_validation->set_rules('tahun_akademik','Tahun Akademik','xss_clean|required');
 			
 			if($this->form_validation->run() == TRUE)
 			{
@@ -749,10 +784,10 @@ class Web extends CI_Controller
 		
 		if(!empty($_POST)){
 			
-			$this->form_validation->set_rules('kode_mk','Matakuliah','required');
-			$this->form_validation->set_rules('kode_dosen','Dosen','required');
-			$this->form_validation->set_rules('kelas','Kelas','required');
-			$this->form_validation->set_rules('tahun_akademik','Tahun Akademik','required');
+			$this->form_validation->set_rules('kode_mk','Matakuliah','xss_clean|required');
+			$this->form_validation->set_rules('kode_dosen','Dosen','xss_clean|required');
+			$this->form_validation->set_rules('kelas','Kelas','xss_clean|required');
+			$this->form_validation->set_rules('tahun_akademik','Tahun Akademik','xss_clean|required');
 			
 			if($this->form_validation->run() == TRUE)
 			{				
@@ -846,6 +881,8 @@ class Web extends CI_Controller
 			$data['msg'] = 'Data telah berhasil diupdate';					
 		}
 		
+		
+		
 		$data['rs_dosen'] = $this->m_dosen->get_all();
 		$data['rs_waktu_tidak_bersedia'] = $this->m_waktu_tidak_bersedia->get_by_dosen($kode_dosen);
 		$data['rs_hari']  =$this->m_hari->get();
@@ -858,18 +895,25 @@ class Web extends CI_Controller
 	}
 	
 	//function 
+	
 	function penjadwalan(){
+		
 		$data = array();
+		
+		
+		
 		if(!empty($_POST)){
-			$this->form_validation->set_rules('semester_tipe','Semester','required');
-			$this->form_validation->set_rules('tahun_akademik','Tahun Akademik','required');
-			$this->form_validation->set_rules('jumlah_populasi','Jumlah Populiasi','required');
-			$this->form_validation->set_rules('probabilitas_crossover','Probabilitas CrossOver','required');
-			$this->form_validation->set_rules('probabilitas_mutasi','Probabilitas Mutasi','required');
-			$this->form_validation->set_rules('jumlah_generasi','Jumlah Generasi','required');
+			$this->form_validation->set_rules('semester_tipe','Semester','xss_clean|required');
+			$this->form_validation->set_rules('tahun_akademik','Tahun Akademik','xss_clean|required');
+			$this->form_validation->set_rules('jumlah_populasi','Jumlah Populiasi','xss_clean|required');
+			$this->form_validation->set_rules('probabilitas_crossover','Probabilitas CrossOver','xss_clean|required');
+			$this->form_validation->set_rules('probabilitas_mutasi','Probabilitas Mutasi','xss_clean|required');
+			$this->form_validation->set_rules('jumlah_generasi','Jumlah Generasi','xss_clean|required');
 			
 			if($this->form_validation->run() == TRUE)
 			{				
+				//tempat keajaiban dimulai. SEMANGAAAAAATTTTTTT BANZAIIIIIIIIIIIII !
+				
 				$jenis_semester = $this->input->post('semester_tipe');
 				$tahun_akademik = $this->input->post('tahun_akademik');
 				$jumlah_populasi = $this->input->post('jumlah_populasi');
@@ -900,32 +944,64 @@ class Web extends CI_Controller
 					
 					//redirect(base_url() . 'web/penjadwalan','reload');
 				}else{
-					$genetik = new Genetik($jenis_semester,$tahun_akademik,$jumlah_populasi,$crossOver,$mutasi,5,'4-5-6',6);
+					$genetik = new genetik($jenis_semester,
+										   $tahun_akademik,
+										   $jumlah_populasi,
+										   $crossOver,
+										   $mutasi,
+										   //~~~~~~BUG!~~~~~~~
+										   /*										   
+											1 senin 5
+											2 selasa 4
+										    3 rabu 3
+										    4 kamis 2
+										    5 jumat 1										    
+										   */
+										   5,//kode hari jumat										   
+										   '4-5-6', //kode jam jumat
+										   //jam dhuhur tidak dipake untuk sementara
+										   6); //kode jam dhuhur
 					$genetik->AmbilData();
 					$genetik->Inisialisai();
+					
+					
+					
 					$found = false;
+					
 					for($i = 0;$i < $jumlah_generasi;$i++ ){
 						$fitness = $genetik->HitungFitness();
+						
 						//if($i == 100){
 						//	var_dump($fitness);
 						//	exit();
 						//}
+						
 						$genetik->Seleksi($fitness);
 						$genetik->StartCrossOver();
+						
 						$fitnessAfterMutation = $genetik->Mutasi();
+						
 						for ($j = 0; $j < count($fitnessAfterMutation); $j++){
+							//test here
 							if($fitnessAfterMutation[$j] == 1){
+								
 								$this->db->query("TRUNCATE TABLE jadwalkuliah");
+								
 								$jadwal_kuliah = array(array());
 								$jadwal_kuliah = $genetik->GetIndividu($j);
 								
+								
+								
 								for($k = 0; $k < count($jadwal_kuliah);$k++){
+									
 									$kode_pengampu = intval($jadwal_kuliah[$k][0]);
 									$kode_jam = intval($jadwal_kuliah[$k][1]);
 									$kode_hari = intval($jadwal_kuliah[$k][2]);
 									$kode_ruang = intval($jadwal_kuliah[$k][3]);
 									$this->db->query("INSERT INTO jadwalkuliah(kode_pengampu,kode_jam,kode_hari,kode_ruang) ".
 													 "VALUES($kode_pengampu,$kode_jam,$kode_hari,$kode_ruang)");
+									
+									
 								}
 								
 								//var_dump($jadwal_kuliah);
@@ -990,6 +1066,7 @@ class Web extends CI_Controller
                 $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $data->$field);
                 $col++;
             }
+ 
             $row++;
         }
 		
@@ -1001,6 +1078,7 @@ class Web extends CI_Controller
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="Products_'.date('dMy').'.xls"');
         header('Cache-Control: max-age=0');
+ 
         $objWriter->save('php://output');
 	}
 }

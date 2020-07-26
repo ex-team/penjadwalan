@@ -8,7 +8,9 @@ class M_Pengampu extends CI_Model{
 	public $order;
 
 	function __construct(){
+
 		parent::__construct();
+
 	}
 	
 	function get($semester_tipe,$tahun_akademik){
@@ -102,7 +104,7 @@ class M_Pengampu extends CI_Model{
 		$this->db->query("DELETE FROM pengampu WHERE kode = '$kode'");		
 	}
 	
-	function cek_for_update($kode,$kode_mk,$kode_dosen,$kelas,$tahun_akademik){
+	function cek_for_update($kode,$kode_mk,$kode_dosen,$kelas,$tahun_akademik){		
 		$rs = $this->db->query(
 							   "SELECT CAST(COUNT(*) AS CHAR(1)) as cnt".
                                "FROM pengampu ".

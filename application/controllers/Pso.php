@@ -34,7 +34,7 @@ class Pso extends CI_Controller
     private $logAmbilData;
     private $logInisialisasi;
     
-    // private $log;
+    private $log;
     private $induk = array();
     
     //jumat
@@ -47,8 +47,8 @@ class Pso extends CI_Controller
     
     function __construct($jenis_semester, $tahun_akademik, $populasi, $c1, $c2, $w, $kode_jumat, $range_jumat, $kode_dhuhur)
     {        
-        parent::__construct();
-
+        parent::__construct();        
+        
         $this->jenis_semester = $jenis_semester;
         $this->tahun_akademik = $tahun_akademik;
         $this->populasi       = intval($populasi);
@@ -63,24 +63,28 @@ class Pso extends CI_Controller
     
     public function AmbilData()
     {
+        
         $rs_data = $this->db->query("SELECT   a.kode,"
-                                    . "b.sks,"
-                                    . "a.kode_dosen,"
-                                    . "b.jenis "
+                                    . "       b.sks,"
+                                    . "       a.kode_dosen,"
+                                    . "       b.jenis "
                                     . "FROM pengampu a "
                                     . "LEFT JOIN matakuliah b "
                                     . "ON a.kode_mk = b.kode "
                                     . "WHERE b.semester%2 = $this->jenis_semester "
-                                    . "AND a.tahun_akademik = '$this->tahun_akademik'");
+                                    . "      AND a.tahun_akademik = '$this->tahun_akademik'");
         
         $i = 0;
         foreach ($rs_data->result() as $data) {
-            $this->pengampu[$i]    = intval($data->kode);
+            $this->pengampu[$i] = intval($data->kode);
             $this->sks[$i]         = intval($data->sks);
             $this->dosen[$i]       = intval($data->kode_dosen);
             $this->jenis_mk[$i]    = $data->jenis;
             $i++;
         }
+        
+        //var_dump($this->jenis_mk);
+        //exit();
         
         //Fill Array of Jam Variables
         $rs_jam = $this->db->query("SELECT kode FROM jam");
@@ -270,7 +274,7 @@ class Pso extends CI_Controller
                     }
                 }
                 
-                //BENTROK DOSEN
+                //______________________BENTROK DOSEN
                 if (
                 //ketika jam sama
                     $jam_a == $jam_b && 

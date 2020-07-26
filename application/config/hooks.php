@@ -1,6 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
 | -------------------------------------------------------------------------
 | Hooks
@@ -8,6 +6,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | This file lets you define "hooks" to extend CI without hacking the core
 | files.  Please see the user guide for info:
 |
-|	https://codeigniter.com/user_guide/general/hooks.html
+|	http://codeigniter.com/user_guide/general/hooks.html
 |
 */
+
+
+// $hook['pre_system'] = array(
+// 	'function' => 'load_exceptions',
+// 	'filename' => 'uhoh.php',
+// 	'filepath' => 'hooks',
+// );
+/* End of file hooks.php */
+/* Location: ./application/config/hooks.php */
