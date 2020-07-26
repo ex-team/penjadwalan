@@ -48,7 +48,6 @@ class Pso extends CI_Controller
     function __construct($jenis_semester, $tahun_akademik, $populasi, $c1, $c2, $w, $kode_jumat, $range_jumat, $kode_dhuhur)
     {        
         parent::__construct();        
-        
         $this->jenis_semester = $jenis_semester;
         $this->tahun_akademik = $tahun_akademik;
         $this->populasi       = intval($populasi);
@@ -56,18 +55,16 @@ class Pso extends CI_Controller
         $this->c2             = $c2;
         $this->w              = $w;
         $this->kode_jumat     = intval($kode_jumat);
-        $this->range_jumat    = explode('-',$range_jumat);//$hari_jam = explode(':', $this->waktu_dosen[$j][1]);
+        $this->range_jumat    = explode('-',$range_jumat);
         $this->kode_dhuhur    = intval($kode_dhuhur);
-       
     }
     
     public function AmbilData()
     {
-        
         $rs_data = $this->db->query("SELECT   a.kode,"
-                                    . "       b.sks,"
-                                    . "       a.kode_dosen,"
-                                    . "       b.jenis "
+                                    . "b.sks,"
+                                    . "a.kode_dosen,"
+                                    . "b.jenis "
                                     . "FROM pengampu a "
                                     . "LEFT JOIN matakuliah b "
                                     . "ON a.kode_mk = b.kode "
@@ -122,9 +119,6 @@ class Pso extends CI_Controller
             $i++;
         }
         
-        //var_dump($this->ruangLaboratorium);
-        //exit(0);
-        
         $rs_WaktuDosen = $this->db->query("SELECT kode_dosen,".
                                           "CONCAT_WS(':',kode_hari,kode_jam) as kode_hari_jam ".
                                           "FROM waktu_tidak_bersedia");        
@@ -150,13 +144,10 @@ class Pso extends CI_Controller
         $jumlah_ruang_lab = count($this->ruangLaboratorium);
         
         for ($i = 0; $i < $this->populasi; $i++) {
-            
             for ($j = 0; $j < $jumlah_pengampu; $j++) {
-                
                 $sks = $this->sks[$j];
-                
                 $this->individu[$i][$j][0] = $j;
-                
+
                 // Penentuan jam secara acak ketika 1 sks 
                 if ($sks == 1) {
                     $this->individu[$i][$j][1] = mt_rand(0,  $jumlah_jam - 1);
@@ -176,8 +167,9 @@ class Pso extends CI_Controller
                 if ($sks == 4) {
                     $this->individu[$i][$j][1] = mt_rand(0, ($jumlah_jam - 1) - 3);
                 }
-                
-                $this->individu[$i][$j][2] = mt_rand(0, $jumlah_hari - 1); // Penentuan hari secara acak 
+
+                // Penentuan hari secara acak 
+                $this->individu[$i][$j][2] = mt_rand(0, $jumlah_hari - 1);
                 
                 if ($this->jenis_mk[$j] === $this->TEORI) {
                     $this->individu[$i][$j][3] = intval($this->ruangReguler[mt_rand(0, $jumlah_ruang_reguler - 1)]);
@@ -191,42 +183,29 @@ class Pso extends CI_Controller
     private function CekFitness($indv)
     {
         $penalty = 0;
-        
         $hari_jumat = intval($this->kode_jumat);
         $jumat_0 = intval($this->range_jumat[0]);
         $jumat_1 = intval($this->range_jumat[1]);
         $jumat_2 = intval($this->range_jumat[2]);
-        
-        //var_dump($this->range_jumat);
-        //exit();
-        
         $jumlah_pengampu = count($this->pengampu);
         
         for ($i = 0; $i < $jumlah_pengampu; $i++)
         {
-          
           $sks = intval($this->sks[$i]);
-          
           $jam_a = intval($this->individu[$indv][$i][1]);
           $hari_a = intval($this->individu[$indv][$i][2]);
           $ruang_a = intval($this->individu[$indv][$i][3]);
           $dosen_a = intval($this->dosen[$i]);        
-          
-          
+
             for ($j = 0; $j < $jumlah_pengampu; $j++) {                 
-              
                 $jam_b = intval($this->individu[$indv][$j][1]);
                 $hari_b = intval($this->individu[$indv][$j][2]);
                 $ruang_b = intval($this->individu[$indv][$j][3]);
                 $dosen_b = intval($this->dosen[$j]);
-                  
-                  
                 //1.bentrok ruang dan waktu dan 3.bentrok dosen
-                
                 //ketika pemasaran matakuliah sama, maka langsung ke perulangan berikutnya
                 if ($i == $j)
                     continue;
-                
                 //#region Bentrok Ruang dan Waktu
                 //Ketika jam,hari dan ruangnya sama, maka penalty + satu
                 if ($jam_a == $jam_b &&
@@ -235,9 +214,7 @@ class Pso extends CI_Controller
                 {
                     $penalty += 1;
                 }
-                
-                //Ketika sks  = 2, 
-                //hari dan ruang sama, dan 
+                //Ketika sks  = 2, hari dan ruang sama, dan 
                 //jam kedua sama dengan jam pertama matakuliah yang lain, maka penalty + 1
                 if ($sks >= 2)
                 {
@@ -249,9 +226,7 @@ class Pso extends CI_Controller
                     }
                 }
                 
-                
-                //Ketika sks  = 3, 
-                //hari dan ruang sama dan 
+                //Ketika sks  = 3, hari dan ruang sama dan 
                 //jam ketiga sama dengan jam pertama matakuliah yang lain, maka penalty + 1
                 if ($sks >= 3) {
                     if ($jam_a + 2 == $jam_b &&
@@ -262,8 +237,7 @@ class Pso extends CI_Controller
                     }
                 }
                 
-                //Ketika sks  = 4, 
-                //hari dan ruang sama dan 
+                //Ketika sks  = 4, hari dan ruang sama dan 
                 //jam ketiga sama dengan jam pertama matakuliah yang lain, maka penalty + 1
                 if ($sks >= 4) {
                     if ($jam_a + 3 == $jam_b &&
@@ -274,7 +248,7 @@ class Pso extends CI_Controller
                     }
                 }
                 
-                //______________________BENTROK DOSEN
+                //BENTROK DOSEN
                 if (
                 //ketika jam sama
                     $jam_a == $jam_b && 
@@ -336,18 +310,15 @@ class Pso extends CI_Controller
             // #region Bentrok sholat Jumat
             if (($hari_a  + 1) == $hari_jumat) //2.bentrok sholat jumat
             {
-                
                 if ($sks == 1)
                 {
-                   if (
-                       
+                   if (  
                         ($jam_a == ($jumat_0 - 1)) ||
                         ($jam_a == ($jumat_1 - 1)) ||
                         ($jam_a == ($jumat_2 - 1))
                        
                        )
                    {
-                       
                        $penalty += 1;
                    }
                 }
@@ -371,7 +342,6 @@ class Pso extends CI_Controller
                         echo '($jumat_2 - 1) = ' . ($jumat_2- 1). '<br>';
                         exit();
                         */
-                        
                         $penalty += 1;                        
                     }
                 }
@@ -406,7 +376,6 @@ class Pso extends CI_Controller
                 }
             }
             //#endregion
-            
             //#region Bentrok dengan Waktu Keinginan Dosen
             //Boolean penaltyForKeinginanDosen = false;
             
@@ -426,9 +395,7 @@ class Pso extends CI_Controller
                 }                            
             }
                        
-            
             //#endregion
-            
             //#region Bentrok waktu dhuhur
             /*
             if ($jam_a == ($this->kode_dhuhur - 1))
@@ -455,7 +422,6 @@ class Pso extends CI_Controller
         //=>6.praktikum harus pada ruang lab {telah ditetapkan dari awal perandoman
         //    bahwa jika praktikum harus ada pada LAB dan mata kuliah reguler harus 
         //    pada kelas reguler
-        
         
         //soft constraint //TODO
         //$fitness = array();
