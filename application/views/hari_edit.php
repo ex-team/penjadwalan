@@ -13,14 +13,16 @@
       <div class="row-fluid">
         <?php if(isset($msg)) { ?>                        
               <div class="alert alert-error">
-                <button type="button" class="close" data-dismiss="alert">×</button>                
+                <button type="button" class="close" data-dismiss="alert">ï¿½</button>                
                 <?php echo $msg;?>
               </div>  
         <?php } ?>    
 
-        <form id="tab" method="POST" >                       
+        <form id="tab" method="POST" >  
+        <label>ID Hari</label>
+            <input id="id_hari" type="text" value="<?php echo $hari->id_hari;?>" name="id_hari" class="input-xsmall" />                     
             <label>Nama Hari</label>
-            <input id="nama" type="text" value="<?php echo $hari->nama;?>" name="nama" class="input-xsmall" />
+            <input id="nama_hari" type="text" value="<?php echo $hari->nama_hari;?>" name="nama_hari" class="input-xsmall" />
             
             <div class="form-actions">
               <button type="submit" class="btn btn-primary">Save</button>

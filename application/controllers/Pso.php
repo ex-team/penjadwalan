@@ -385,8 +385,8 @@ class Pso extends CI_Controller
     //region Seleksi
     public function Seleksi($fitness)
     {
-        $jumlah = 0;
-        $rank = [];
+        $jumlah = 0;// posisi saat itu
+        $rank = []; //gbest
 
         for ($i = 0; $i < $this->populasi; $i++) {
             //proses ranking berdasarkan nilai fitness
@@ -399,24 +399,24 @@ class Pso extends CI_Controller
                 $fitnessA = floatval($fitness[$i]);
                 $fitnessB = floatval($fitness[$j]);
 
-                if ($fitnessA > $fitnessB) {
+                if ($fitnessA <= $fitnessB) { //dibandingkan dengan fitness yg terbaik
                     $rank[$i]++;
                 }
             }
 
-            $jumlah += $rank[$i];
+            $jumlah = $rank[$i]; // gbest = posisi
         }
 
-        $jumlah_rank = count($rank);
+        $jumlah_rank = count($rank); // update gbest dengan posisi saat itu
         for ($i = 0; $i < $this->populasi; $i++) {
             //proses seleksi berdasarkan ranking yang telah dibuat
             //int nexRandom = random.Next(1, jumlah);
             //random = new Random(nexRandom);
-            $target = mt_rand(0, $jumlah - 1);
+            $target = mt_rand(0, $jumlah + 1); //posisi 
 
-            $cek = 0;
+            $cek = 0; // pbest
             for ($j = 0; $j < $jumlah_rank; $j++) {
-                $cek += $rank[$j];
+                $cek = $rank[$j];
                 if (intval($cek) >= intval($target)) {
                     $this->induk[$i] = $j;
                     break;

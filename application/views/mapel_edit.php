@@ -1,11 +1,11 @@
-<?php foreach($rs_ruang->result() as $ruang) {} ?>
+<?php foreach($rs_mk->result() as $mk) {} ?>
 <div class="content">
    <div class="header">
       <h1 class="page-title"><?php echo $page_title;?></h1>
    </div>
    <ul class="breadcrumb">
       <li><a href="<?php echo base_url();?>">Beranda</a> <span class="divider">/</span></li>
-      <li><a href="<?php echo base_url();?>web/ruang">Modul Ruang</a> <span class="divider">/</span></li>
+      <li><a href="<?php echo base_url();?>web/mapel">Modul Mapel</a> <span class="divider">/</span></li>
       <li class="active">Ubah Data</li>
    </ul>
    
@@ -21,21 +21,21 @@
 
 
         <form id="tab" method="POST" >
-            <label>Nama</label>
-            <input id="nama_ruang" type="text" value="<?php echo $ruang->nama_ruang;?>" name="nama_ruang" class="input-xlarge" />
+
+             <label>Nama</label>
+            <input id="nama_mapel" type="text" value="<?php echo $mapel->nama_mapel;?>" name="nama_mapel" class="input-xlarge" />
             
-            <label>Kapasitas</label>
-            <input id="kapasitas" type="text" value="<?php echo $ruang->kapasitas;?>" name="kapasitas" class="input-xsmall" />
             
-            <label>Category</label>
-            <select name="jenis" class="input-xlarge">            
-              <option value="TEORI" <?php echo $ruang->jenis === 'TEORI' ? 'selected':'';?> /> TEORI
-              <option value="LABORATORIUM" <?php echo $ruang->jenis === 'LABORATORIUM' ? 'selected':'';?> /> LABORATORIUM            
-            </select>
+            <label>SKS</label>
+            <input id="sks" type="text" value="<?php echo $mapel->sks;?>" name="sks" class="input-xsmall" />
+            
+            <label>Semester</label>
+            <input id="semester" type="text" value="<?php echo $mapel->semester;?>" name="semester" class="input-xsmall" />       
+            
 			
             <div class="form-actions">
               <button type="submit" class="btn btn-primary">Save</button>
-              <a href="<?php echo base_url() .'web/ruang'; ?>"><button type="button" class="btn">Cancel</button></a>
+              <a href="<?php echo base_url() .'web/mapel'; ?>"><button type="button" class="btn">Cancel</button></a>
             </div>
         </form>
 

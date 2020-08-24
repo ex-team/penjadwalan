@@ -15,10 +15,10 @@
       <?php } ?>  
       <div class="row-fluid">
          <form class="form" method="POST">
-            <label>Dosen</label>
-            <select id = "kode_dosen" name="kode_dosen" class="input-xlarge" onchange="change_dosen_tidak_bersedia()">
-               <?php foreach($rs_dosen->result() as $dosen) { ?>
-               <option value="<?php echo $dosen->kode;?>" <?php echo isset($kode_dosen) ? ($kode_dosen === $dosen->kode ? 'selected':'') : '' ;?> /> <?php echo $dosen->nama;?>
+            <label>Guru</label>
+            <select id = "id_guru" name="id_guru" class="input-xlarge" onchange="change_dosen_tidak_bersedia()">
+               <?php foreach($rs_guru->result() as $guru) { ?>
+               <option value="<?php echo $guru->id_guru;?>" <?php echo isset($id_guru) ? ($id_guru === $guru->id_guru ? 'selected':'') : '' ;?> /> <?php echo $guru->nama_guru;?>
                   <?php } ?>
             </select>
             <div class="form">
@@ -41,7 +41,7 @@
                         foreach($rs_hari->result() as $hari) {
                            foreach($rs_jam->result() as $jam) { ?>
                      <tr>
-                        <td><?php echo $hari->nama;?></td>
+                        <td><?php echo $hari->nama_hari;?></td>
                         <td><?php echo $jam->range_jam;?></td>
                         <?php
                            $status = '';
@@ -52,7 +52,7 @@
                              }
                            } ?>
                         <td>
-                           <input type="checkbox" name="arr_tidak_bersedia[]" value="<?php echo $kode_dosen . '-'. $hari->kode . '-' . $jam->kode ?>" <?php echo $status; ?>> Tidak Bersedia
+                           <input type="checkbox" name="arr_tidak_bersedia[]" value="<?php echo $id_guru . '-'. $hari->id_hari . '-' . $jam->id_jam?>" <?php echo $status; ?>> Tidak Bersedia
                         </td>
                      </tr>
                      <?php     

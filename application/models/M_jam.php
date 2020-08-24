@@ -14,35 +14,35 @@ class M_Jam extends CI_Model{
 	}
 	
 	function get(){
-		$rs = $this->db->query("SELECT kode ,range_jam ".
+		$rs = $this->db->query("SELECT id_jam ,range_jam ".
 							   "FROM jam ".
 							   "ORDER BY range_jam");
 		return $rs;
 	}
 	
-    function get_by_kode($kode){
-		$rs = $this->db->query("SELECT kode ,range_jam ".
+    function get_by_id($id){
+		$rs = $this->db->query("SELECT id_jam ,range_jam ".
 							   "FROM jam ".
-							   "WHERE kode = $kode");
+							   "WHERE id_jam = $id");
 		return $rs;
 	}
 
-	function cek_for_update($kode_baru,$kode_lama){		
+	function cek_for_update($id_baru,$id_lama){		
 		$rs = $this->db->query("SELECT CAST(COUNT(*) AS CHAR(1)) as cnt ".
 							   "FROM jam ".
-							   "WHERE kode=$kode_baru AND kode <> $kode_lama");
+							   "WHERE id_jam=$id_baru AND id_jam <> $id_lama");
 		return $rs->row()->cnt;
 	}
 	
-	function cek_for_insert($kode){
+	function cek_for_insert($id){
 		$rs = $this->db->query("SELECT CAST(COUNT(*) AS CHAR(1)) as cnt ".
 							   "FROM jam ".
-							   "WHERE kode=$kode");
+							   "WHERE id_jam=$id");
 		return $rs->row()->cnt;
 	}
 	
-	function update($kode,$data){
-        $this->db->where('kode',$kode);
+	function update($id,$data){
+        $this->db->where('id_jam',$id);
         $this->db->update('jam',$data);
     }
 	
@@ -50,8 +50,8 @@ class M_Jam extends CI_Model{
         $this->db->insert('jam',$data);		
     }
 	
-	function delete($kode){
-		$this->db->query("DELETE FROM jam WHERE kode = '$kode'");
+	function delete($id){
+		$this->db->query("DELETE FROM jam WHERE id_jam = '$id'");
 	}
 	
 }

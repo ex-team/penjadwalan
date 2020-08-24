@@ -1,11 +1,12 @@
-<?php foreach($rs_ruang->result() as $ruang) {} ?>
+<?php foreach($rs_guru->result() as $guru) {} ?>
+
 <div class="content">
    <div class="header">
       <h1 class="page-title"><?php echo $page_title;?></h1>
    </div>
    <ul class="breadcrumb">
       <li><a href="<?php echo base_url();?>">Beranda</a> <span class="divider">/</span></li>
-      <li><a href="<?php echo base_url();?>web/ruang">Modul Ruang</a> <span class="divider">/</span></li>
+      <li><a href="<?php echo base_url();?>web/guru">Modul Dosen</a> <span class="divider">/</span></li>
       <li class="active">Ubah Data</li>
    </ul>
    
@@ -13,7 +14,7 @@
       <div class="row-fluid">
         <?php if(isset($msg)) { ?>                        
               <div class="alert alert-error">
-                <button type="button" class="close" data-dismiss="alert">�</button>                
+                <button type="button" class="close" data-dismiss="alert">x</button>                
                 <?php echo $msg;?>
               </div>  
         <?php } ?>    
@@ -21,21 +22,22 @@
 
 
         <form id="tab" method="POST" >
+            <label>NIP</label>
+            <input id="NIP" type="text" value="<?php echo $guru->NIP;?>" name="NIP" class="input-xlarge" />
+            
             <label>Nama</label>
-            <input id="nama_ruang" type="text" value="<?php echo $ruang->nama_ruang;?>" name="nama_ruang" class="input-xlarge" />
+            <input id="nama_guru" type="text" value="<?php echo $guru->nama_guru;?>" name="nama_guru" class="input-xlarge" />
             
-            <label>Kapasitas</label>
-            <input id="kapasitas" type="text" value="<?php echo $ruang->kapasitas;?>" name="kapasitas" class="input-xsmall" />
+            <label>Alamat</label>
+            <input id="alamat" type="text" value="<?php echo $guru->alamat;?>" name="alamat" class="input-xlarge" />
             
-            <label>Category</label>
-            <select name="jenis" class="input-xlarge">            
-              <option value="TEORI" <?php echo $ruang->jenis === 'TEORI' ? 'selected':'';?> /> TEORI
-              <option value="LABORATORIUM" <?php echo $ruang->jenis === 'LABORATORIUM' ? 'selected':'';?> /> LABORATORIUM            
-            </select>
+            <label>Telp</label>
+            <input id="telp" type="text" value="<?php echo $guru->telp;?>" name="telp" class="input-xlarge" />       
+            
 			
             <div class="form-actions">
               <button type="submit" class="btn btn-primary">Save</button>
-              <a href="<?php echo base_url() .'web/ruang'; ?>"><button type="button" class="btn">Cancel</button></a>
+              <a href="<?php echo base_url() .'web/dosen'; ?>"><button type="button" class="btn">Cancel</button></a>
             </div>
         </form>
 

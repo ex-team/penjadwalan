@@ -13,122 +13,117 @@ class M_Pengampu extends CI_Model{
 
 	}
 	
-	function get($semester_tipe,$tahun_akademik){
+	function get(){
 	
-		$sql  = "SELECT a.kode as kode,".
-				"       b.kode as `kode_mk`,".
-				"       b.nama as `nama_mk`,".
-				"       c.kode as `kode_dosen`,".
-				"       c.nama as  `nama_dosen`,".
-				"       a.kelas as kelas,".
-				"       a.tahun_akademik as `tahun_akademik` ".
+		$rs = $this->db->query("SELECT a.id_pengampu as id_pengampu,".
+				"       b.id_mapel as `id_mapel`,".
+				"       b.nama_mapel as `nama_mapel`,".
+				"       c.id_guru as `id_guru`,".
+				"       c.nama_guru as  `nama_guru`,".
+				"       a.kelas as kelas ".
 				"FROM pengampu a ".
-				"LEFT JOIN matakuliah b ".
-				"ON a.kode_mk = b.kode ".
-				"LEFT JOIN dosen c ".
-				"ON a.kode_dosen = c.kode ".
-				"WHERE b.semester%2=$semester_tipe AND a.tahun_akademik = '$tahun_akademik' ".                
-				"ORDER BY $this->sort $this->order ".
-				"LIMIT $this->offset,$this->limit";
+				"LEFT JOIN mapel b ".
+				"ON a.id_mapel = b.id_mapel ".
+				"LEFT JOIN guru c ".
+				"ON a.id_guru = c.id_guru ".
+				               
+				"ORDER BY b.nama_mapel,a.kelas");
+
 		
-		$rs = $this->db->query($sql);
 		return $rs;
 	}
 	
-	function get_by_kode($kode){
+	function get_by_id($id){
 		
-		$sql  = "SELECT a.kode as kode,".
-				"       b.kode as `kode_mk`,".
-				"       b.nama as `nama_mk`,".
-				"       c.kode as `kode_dosen`,".
-				"       c.nama as  `nama_dosen`,".
-				"       a.kelas as kelas,".
-				"       a.tahun_akademik as `tahun_akademik` ".
+		$sql  = "SELECT a.id_pengampu as id_pengampu,".
+				"       b.id_mapel as `id_mapel`,".
+				"       b.nama_mapel as `nama_mapel`,".
+				"       c.id_guru as `id_guru`,".
+				"       c.nama_guru as  `nama_guru`,".
+				"       a.kelas as kelas".
 				"FROM pengampu a ".
-				"LEFT JOIN matakuliah b ".
-				"ON a.kode_mk = b.kode ".
-				"LEFT JOIN dosen c ".
-				"ON a.kode_dosen = c.kode ".
-				"WHERE a.kode = $kode";
+				"LEFT JOIN mapel b ".
+				"ON a.id_mapel = b.id_mapel ".
+				"LEFT JOIN guru c ".
+				"ON a.id_guru = c.id_guru ".
+				"WHERE a.id_pengampu = $id";
 		
 		$rs = $this->db->query($sql);
 		return $rs;
 		
 	}
 	
-	function get_search($search_query, $semester_tipe,$tahun_akademik){
+	function get_search($search_query){
 	
 		$rs = $this->db->query(
-							    "SELECT a.kode as kode,".
-								"       b.kode as `kode_mk`,".
-								"       b.nama as `nama_mk`,".
-								"       c.kode as `kode_dosen`,".
-								"       c.nama as  `nama_dosen`,".
-								"       a.kelas as kelas,".
-								"       a.tahun_akademik as `tahun_akademik` ".
+							    "SELECT a.id_pengampu as id_pengampu,".
+								"       b.id_mapel as `id_mapel`,".
+								"       b.nama_mapel as `nama_mapel`,".
+								"       c.id_guru as `id_guru`,".
+								"       c.nama_guru as  `nama_guru`,".
+								"       a.kelas as kelas ".
 								"FROM pengampu a ".
-								"LEFT JOIN matakuliah b ".
-								"ON a.kode_mk = b.kode ".
-								"LEFT JOIN dosen c ".
-								"ON a.kode_dosen = c.kode ".
-								"WHERE b.semester%2=$semester_tipe AND a.tahun_akademik = '$tahun_akademik' AND (c.nama LIKE '%$search_query%' OR b.nama LIKE '%$search_query%') ".                
-								"ORDER BY b.nama,a.kelas");
+								"LEFT JOIN mapel b ".
+								"ON a.id_mapel = b.id_mapel ".
+								"LEFT JOIN guru c ".
+								"ON a.id_guru = c.id_guru ".
+								"WHERE  c.nama_guru LIKE '%$search_query%' OR b.nama_mapel LIKE '%$search_query%' ".                
+								"ORDER BY b.nama_mapel,a.kelas");
 		return $rs;
 	}
 	
-	function num_page($semester_tipe,$tahun_akademik){
-		
-		
-		$rs = $this->db->query(
-							    "SELECT CAST(COUNT(*) AS CHAR(4)) as cnt ".
+function num_page(){
+		$rs = $this->db->query(	
+								
+								"SELECT CAST(COUNT(*) AS CHAR(4)) as cnt ".
+								
 								"FROM pengampu a ".
-								"LEFT JOIN matakuliah b ".
-								"ON a.kode_mk = b.kode ".
-								"LEFT JOIN dosen c ".
-								"ON a.kode_dosen = c.kode ".
-								"WHERE b.semester%2=$semester_tipe AND a.tahun_akademik = '$tahun_akademik' ".                
-								"ORDER BY b.nama,a.kelas");
+								"LEFT JOIN mapel b ".
+								"ON a.id_mapel = b.id_mapel ".
+								"LEFT JOIN guru c ".
+								"ON a.id_guru = c.id_guru ".               
+								"ORDER BY b.nama_mapel,a.kelas");
+
 		return $rs->row()->cnt;
 		
 	}
 	
-	function delete_by_kode_dosen($kode_dosen){
-        $this->db->query("DELETE FROM pengampu WHERE kode_dosen='$kode_dosen'");
+	function delete_by_id_guru($id_guru){
+        $this->db->query("DELETE FROM pengampu WHERE id_guru='$id_guru'");
     }
 	
-	function delete_by_mk($kode_mk){
-		$this->db->query("DELETE FROM pengampu WHERE kode_mk = '$kode_mk'");
+	function delete_by_mapel($id_mapel){
+		$this->db->query("DELETE FROM pengampu WHERE id_mapel = '$id_mapel'");
 	}
 	
-	function delete($kode){
-		$this->db->query("DELETE FROM pengampu WHERE kode = '$kode'");		
+	function delete($id){
+		$this->db->query("DELETE FROM pengampu WHERE id_pengampu = '$id'");		
 	}
 	
-	function cek_for_update($kode,$kode_mk,$kode_dosen,$kelas,$tahun_akademik){		
+	function cek_for_update($id_mapel,$id_guru,$kelas,$id){		
 		$rs = $this->db->query(
 							   "SELECT CAST(COUNT(*) AS CHAR(1)) as cnt".
                                "FROM pengampu ".
-							   "WHERE kode_mk='$kode_mk' AND ".
-                               "      kode_dosen=$kode_dosen AND ".
+							   "WHERE id_mapel='$id_mapel' AND ".
+                               "      id_guru=$id_guru AND ".
                                "      kelas = '$kelas' AND ".
-                               "      tahun_akademik='$tahun_akademik' ".
-                               "      AND kode <> $kode");
+                               "      AND id_pengampu <> $id");
 		return $rs->row()->cnt;
 	}
 	
-	function cek_for_insert($kode_mk,$kode_dosen,$kelas,$tahun_akademik,$kode){		
+	function cek_for_insert($id_guru,$kelas,$id){		
 		$rs = $this->db->query(
-							   "SELECT CAST(COUNT(*) AS CHAR(1)) as cnt".
-                               "FROM pengampu ".
-							   "WHERE kode_mk='$kode_mk' AND ".
-                               "      kode_dosen=$kode_dosen AND ".
-                               "      kelas = '$kelas' AND ".
-                               "      tahun_akademik='$tahun_akademik' ");
+								"SELECT CAST(COUNT(*) AS CHAR(1)) as cnt".
+								"FROM pengampu ".
+								"WHERE id_mapel='$id' AND ".
+								"   	id_guru=$id_guru AND ".
+								"      kelas = '$kelas' AND ".
+								"      AND id_pengampu <> $id");
 		return $rs->row()->cnt;
 	}
 	
-	function update($kode,$data){
-		$this->db->where('kode',$kode);
+	function update($id,$data){
+		$this->db->where('id_pengampu',$id);
         $this->db->update('pengampu',$data);
 	}
 	

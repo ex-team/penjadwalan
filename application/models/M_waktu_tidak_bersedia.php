@@ -13,31 +13,31 @@ class M_Waktu_Tidak_Bersedia extends CI_Model{
 
 	}
     
-    function get_by_dosen($kode_dosen){
-      $rs = $this->db->query("SELECT kode_hari,kode_jam ".
+    function get_by_guru($id_guru){
+      $rs = $this->db->query("SELECT id_hari,id_jam ".
                              "FROM waktu_tidak_bersedia ".
-                             "WHERE kode_dosen = $kode_dosen");
+                             "WHERE id_guru = $id_guru");
       return $rs;
     }
     
-    function update($kode,$data){
+    function update($id,$data){
       /*
       string.Format(
                         "UPDATE waktu_tidak_bersedia " +
-                        "SET kode_dosen = {0} " +
-                        "WHERE kode_dosen = {1}",
+                        "SET id_guru = {0} " +
+                        "WHERE id_guru = {1}",
                         txtKode.Text,
                         _selectedkode);
       */
       
-        $this->db->where('kode',$kode);
+        $this->db->where('id_guru',$id);
         $this->db->update('waktu_tidak_bersedia',$data);
     }
     
     
-    function delete_by_dosen($kode_dosen){
+    function delete_by_guru($id_guru){
         $this->db->query("DELETE FROM waktu_tidak_bersedia ".
-                         "WHERE kode_dosen = $kode_dosen");       
+                         "WHERE id_guru = $id_guru");       
       
     }
     

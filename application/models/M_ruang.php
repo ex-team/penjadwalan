@@ -18,27 +18,27 @@ class M_Ruang extends CI_Model{
 		return $rs;
 	}
 	
-	function get_by_kode($kode){
-		$rs = $this->db->query("SELECT * FROM ruang WHERE kode = $kode");
+	function get_by_id($id){
+		$rs = $this->db->query("SELECT * FROM ruang WHERE id_ruang = $id");
 		return $rs;
 	}
 	
-	function cek_for_update($nama,$kode){
+	function cek_for_update($nama,$id){
 		$rs = $this->db->query("SELECT CAST(COUNT(*) AS CHAR(1)) as cnt ".
 							   "FROM ruang ".
-							   "WHERE nama='$nama' AND kode <> $kode");
+							   "WHERE nama_ruang='$nama' AND id_ruang <> $id");
 		return $rs->row()->cnt;
 	}
 	
 	function cek_for_insert($nama){
 		$rs = $this->db->query("SELECT CAST(COUNT(*) AS CHAR(1)) as cnt ".
 							   "FROM ruang ".
-							   "WHERE nama='$nama'");
+							   "WHERE nama_ruang ='$nama'");
 		return $rs->row()->cnt;
 	}
 	
-	function update($kode,$data){
-        $this->db->where('kode',$kode);
+	function update($id,$data){
+        $this->db->where('id_ruang',$id);
         $this->db->update('ruang',$data);
 	}
 	
@@ -46,12 +46,12 @@ class M_Ruang extends CI_Model{
         $this->db->insert('ruang',$data);		
     }
 	
-	function delete($kode){
-		$this->db->query("DELETE FROM ruang where kode = $kode");
+	function delete($id){
+		$this->db->query("DELETE FROM ruang where id_ruang = $id");
 	}
 	
 	function get_search($search_query){
-		$rs = $this->db->query("SELECT kode,nama,kapasitas,jenis FROM ruang WHERE nama LIKE '%$search_query%'");
+		$rs = $this->db->query("SELECT id_ruang,nama_ruang,kapasitas,jenis FROM ruang WHERE nama_ruang LIKE '%$search_query%'");
 		return $rs;
 	}
 	

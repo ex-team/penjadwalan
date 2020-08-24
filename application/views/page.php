@@ -2,7 +2,7 @@
 <html lang="en">
    <head>
       <meta charset="utf-8" />
-      <title>Penjadwalan Matakuliah - <?php echo $page_title;?></title>
+      <title>Penjadwalan Mata Pelajaran - <?php echo $page_title;?></title>
       <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="description" content="" />
@@ -88,28 +88,27 @@
 		}
 		 
 		 function change_get(){		
-		 	var semester_tipe = document.getElementById('semester_tipe');
-			var tahun_akademik = document.getElementById('tahun_akademik');
-		 	window.location.href = "<?php echo base_url().'web/pengampu/' ?>" + semester_tipe.options[semester_tipe.selectedIndex].value  + "/"	  + tahun_akademik.options[tahun_akademik.selectedIndex].value;		
+		 	var semester = document.getElementById('semester_');
+		 	window.location.href = "<?php echo base_url().'web/pengampu/' ?>" + semester.options[semester.selectedIndex].value  + "/";		
 		 }
 		 
-		 function change_dosen_tidak_bersedia() {
+		 function change_guru_tidak_bersedia() {
 			
-			var kode_dosen = document.getElementById('kode_dosen');			
-			window.location.href = "<?php echo base_url().'web/waktu_tidak_bersedia/' ?>" + kode_dosen.options[kode_dosen.selectedIndex].value;		
+			var id_guru = document.getElementById('id_guru');			
+			window.location.href = "<?php echo base_url().'web/waktu_tidak_bersedia/' ?>" + id_guru.options[id_guru.selectedIndex].value;		
 		 }
 		 
-		function get_matakuliah() {		   
-			var semester_tipe = document.getElementById('semester_tipe');
+		function get_mapel() {		   
+			var semester = document.getElementById('semester');
 			//
 			$.ajax({
 			   type:"POST",
 			   async   : false,
 			   cache   : false,
-			   url: "<?php echo base_url()?>web/option_matakuliah_ajax/" + semester_tipe.options[semester_tipe.selectedIndex].value,
+			   url: "<?php echo base_url()?>web/option_mapel_ajax/" + semester.options[semester.selectedIndex].value,
 			   success: function(msg){
 				  //alert(msg);
-				  $('#option_matakuliah').html(msg);
+				  $('#option_mapel').html(msg);
 			   }
 			});
 			return false;		 
@@ -122,18 +121,18 @@
 	   };
 		
 		*/
-		function delete_row(link,kode) {
+		function delete_row(link,id) {
 		 	var answer =  confirm('Anda yakin ingin menghapus data ini?');
 			if(answer){
 			   $.ajax({
 				  type:"POST",
 				  async   : false,
 				  cache   : false,
-				  url: "<?php echo base_url()?>" + link + kode,
+				  url: "<?php echo base_url()?>" + link + id,
 				  success: function(msg){
 					 //alert(msg);
 					 //$('#option_matakuliah').html(msg);
-					 var tr  = $('#row_' + kode);
+					 var tr  = $('#row_' + id);
 					 tr.css("background-color","#FF3700");
 					 tr.fadeOut(400, function(){
 					   tr.remove();
@@ -206,7 +205,7 @@
                   <!--<![endif]-->
                   <div class="navbar">
                      <div class="navbar-inner">
-                        <a class="brand" href="#"><span class="first">Penjadwalan</span> <span class="second">Matakuliah</span></a>
+                        <a class="brand" href="#"><span class="first">Penjadwalan</span> <span class="second">Mapel</span></a>
                      </div>
                   </div>
                   <div class="sidebar-nav" style="padding-top: 5px">
@@ -217,8 +216,8 @@
                      <a href="<?php echo base_url();?>" class="nav-header"><i class="icon-th-list"></i>Beranda</a>
                      <a class="nav-header" ><i class="icon-book"></i>Data </a>
                      <ul id="content-menu" class="nav nav-list collapse in">                        
-						<li><a href="<?php echo base_url()?>web/dosen"><i class="icon-user"></i>Dosen</a></li>   
-						<li><a href="<?php echo base_url()?>web/matakuliah"><i class="icon-book"></i>Matakuliah</a></li>
+						<li><a href="<?php echo base_url()?>web/guru"><i class="icon-user"></i>Guru</a></li>   
+						<li><a href="<?php echo base_url()?>web/mapel"><i class="icon-book"></i>Mapel</a></li>
 						<li><a href="<?php echo base_url();?>web/pengampu"><i class="icon-th-list"></i>Pengampu</a></li>
 						<li><a href="<?php echo base_url()?>web/ruang"><i class="icon-home"></i>Ruang</a></li>
 						<li><a href="<?php echo base_url()?>web/jam"><i class="icon-time"></i>Jam</a></li>

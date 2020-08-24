@@ -21,7 +21,7 @@
 
         <form id="tab" method="POST" >
             <label>Nama</label>
-            <input id="nama" type="text" value="<?php echo set_value('nama');?>" name="nama" class="input-xlarge" />
+            <input id="nama-ruang" type="text" value="<?php echo set_value('nama_ruang');?>" name="nama_ruang" class="input-xlarge" />
             
             <label>Kapasitas</label>
             <input id="kapasitas" type="text" value="<?php echo set_value('kapasitas');?>" name="kapasitas" class="input-xsmall" />

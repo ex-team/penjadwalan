@@ -27,31 +27,23 @@
         <form class="form" method="POST" action="">
           <div class="block span6">
 			<label>Semester</label>
-			<select id = "semester_tipe" name="semester_tipe" class="input-xlarge">            
-			  <option value="1" <?php echo isset($semester_tipe) ? ($semester_tipe === '1' ? 'selected':'') : '' ;?> /> GANJIL
-			  <option value="0" <?php echo isset($semester_tipe) ? ($semester_tipe === '0' ? 'selected':'') : '' ;?> /> GENAP
-			</select>
-			  
-			<label>Tahun Akademik</label>
-			<select id="tahun_akademik" name="tahun_akademik" class="input-xlarge">
-			  <option value="2011-2012" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2011-2012' ? 'selected':'') : '' ;?> /> 2011-2012
-			  <option value="2017-2018" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2017-2018' ? 'selected':'') : '' ;?> /> 2017-2018
-			  <option value="2018-2019" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2018-2019' ? 'selected':'') : '' ;?> /> 2018-2019
-			  <option value="2019-2020" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2019-2020' ? 'selected':'') : '' ;?> /> 2019-2020
+			<select id = "semester" name="semester" class="input-xlarge">            
+			  <option value="1" <?php echo isset($semester) ? ($semester === '1' ? 'selected':'') : '' ;?> /> GANJIL
+			  <option value="0" <?php echo isset($semester) ? ($semester === '0' ? 'selected':'') : '' ;?> /> GENAP
 			</select>
 			  
 			<label>Jumlah Populasi</label>  
 			<input type="text" name="jumlah_populasi" value="<?php echo isset($jumlah_populasi) ? $jumlah_populasi : '10' ;?>">  
           </div>
           <div class="block span6">
-            <label>Probabilitas CrossOver</label>  
-            <input type="text" name="probabilitas_crossover" value="<?php echo isset($probabilitas_crossover) ? $probabilitas_crossover: '0.70' ;?>">
+            <label>Probabilitas Crossover</label>  
+            <input type="text" name="probabilitas_crossover" value="<?php echo isset($probabilitas_crossover) ? $probabilitas_crossover: '0.80' ;?>">
             
             <label>Probabilitas Mutasi</label>  
-            <input type="text" name="probabilitas_mutasi" value="<?php echo isset($probabilitas_mutasi) ? $probabilitas_mutasi : '0.40' ;?>">
-            
+            <input type="text" name="probabilitas_mutasi" value="<?php echo isset($probabilitas_mutasi)? $probabilitas_mutasi : '0.50' ;?>">
+
             <label>Jumlah Generasi</label>  
-            <input type="text" name="jumlah_generasi" value="<?php echo isset($jumlah_generasi) ? $jumlah_generasi : '10000' ;?>">
+            <input type="text" name="jumlah_generasi" value="<?php echo isset($jumlah_generasi) ? $jumlah_generasi : '2000' ;?>">
           </div>
           <div class="form">
             <button type="submit" class="btn" onclick="ShowProgressAnimation();">Proses</button>
@@ -94,12 +86,12 @@
                        <th>Hari</th>
                        <th>Sesi</th>
                        <th>Jam</th>
-                       <th>Matakuliah</th>
+                       <th>Mapel</th>
                        <th>SKS</th>
                        <th>Semester</th>
                        <th>Kelas</th>
-                       <th>Dosen</th>
-                       <th>Ruang</th>
+                       <th>Guru</th>
+                     
                        
                     </tr>
                  </thead>
@@ -112,13 +104,13 @@
 					  <td><?php echo $i;?></td>
                       <td><?php echo $jadwal->hari;?></td>
                       <td><?php echo $jadwal->sesi;?></td>
-                      <td><?php echo $jadwal->jam_kuliah;?></td>
-                      <td><?php echo $jadwal->nama_mk;?></td>
+                      <td><?php echo $jadwal->jam_pelajaran;?></td>
+                      <td><?php echo $jadwal->nama_mapel;?></td>
                       <td><?php echo $jadwal->sks;?></td>
                       <td><?php echo $jadwal->semester;?></td>
                       <td><?php echo $jadwal->kelas;?></td>
-                      <td><?php echo $jadwal->dosen;?></td>
-                      <td><?php echo $jadwal->ruang;?></td>                    
+                      <td><?php echo $jadwal->guru;?></td>
+                                        
                    </tr>
                  <?php $i++;} ?>
                     

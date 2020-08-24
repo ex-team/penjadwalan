@@ -10,7 +10,7 @@
    <div class="container-fluid">
          <?php if($this->session->flashdata('msg')) { ?>                        
             <div class="alert alert-error">
-              <button type="button" class="close" data-dismiss="alert">×</button>                
+              <button type="button" class="close" data-dismiss="alert">ï¿½</button>                
               <?php echo $this->session->flashdata('msg');?>
             </div>  
         <?php } ?>  
@@ -28,7 +28,7 @@
 		 <br>
 		<?php if($rs_hari->num_rows() === 0):?>
 		<div class="alert alert-error">
-            <button type="button" class="close" data-dismiss="alert">×</button>             
+            <button type="button" class="close" data-dismiss="alert">ï¿½</button>             
 			Tidak ada data.
         </div>  
 		<?php else: ?> 	
@@ -36,7 +36,7 @@
               <table class="table table-striped table-bordered">
                  <thead>
                     <tr>                       
-                       <th>#</th>
+                       <th>ID</th>
                        <th>Nama</th>                       
                        <th style="width: 65px;"></th>
                     </tr>
@@ -48,11 +48,11 @@
                    foreach ($rs_hari->result() as $hari) { ?>
                    <tr>                                        
                       <td><?php echo str_pad((int)$i,2,0,STR_PAD_LEFT);?></td>                    
-                      <td><?php echo $hari->nama;?></td>                      
+                      <td><?php echo $hari->nama_hari;?></td>                      
                       
                       <td>
-                        <a href="<?php echo base_url() . 'web/hari_edit/' .$hari->kode;?>" class="btn btn-small"><i class="icon-pencil"></i></a>
-                        <a href="<?php echo base_url() . 'web/hari_delete/' .$hari->kode;?>" class="btn btn-small" onClick="return confirm('Anda yakin ingin menghapus data ini?')" ><i class="icon-trash"></i></a>
+                        <a href="<?php echo base_url() . 'web/hari_edit/' .$hari->id_hari;?>" class="btn btn-small"><i class="icon-pencil"></i></a>
+                        <a href="<?php echo base_url() . 'web/hari_delete/' .$hari->id_hari;?>" class="btn btn-small" onClick="return confirm('Anda yakin ingin menghapus data ini?')" ><i class="icon-trash"></i></a>
                       </td>
                    </tr>
                  <?php $i++;} ?>
