@@ -1,6 +1,6 @@
 <?php
 
-class M_Dosen extends CI_Model{
+class M_Guru extends CI_Model{
 
 	public $limit;
 	public $offset;
@@ -15,22 +15,12 @@ class M_Dosen extends CI_Model{
     
     
     function get(){
-      /*
-      
-      "SELECT kode," +
-                "       nidn as NIDN," +
-                "       nama as Nama," +
-                "       alamat as Alamat," +
-                "       telp as Telp " +
-                "FROM dosen " +
-                "ORDER BY kode");
-      */
       $rs = $this->db->query("SELECT kode, ".
-							 "		 nidn,".
+							 "		 nip,".
 							 "		 nama,".
 							 "		 telp, ".
 							 "		 alamat ".
-                             "FROM dosen ".
+                             "FROM guru ".
 							 "ORDER BY $this->sort $this->order ".
 							 "LIMIT $this->offset,$this->limit");
 							 
@@ -40,11 +30,11 @@ class M_Dosen extends CI_Model{
 	function get_all(){
      
       $rs = $this->db->query("SELECT kode, ".
-							 "		 nidn,".
+							 "		 nip,".
 							 "		 nama,".
 							 "		 telp, ".
 							 "		 alamat ".
-                             "FROM dosen ".
+                             "FROM guru ".
 							 "ORDER BY nama");
 							 
       return $rs;		
@@ -52,65 +42,65 @@ class M_Dosen extends CI_Model{
 	
 	function get_by_kode($kode){
 		$rs = $this->db->query(	"SELECT kode, ".
-								"		 nidn,".
+								"		 nip,".
 								"		 nama,".
 								"		 telp, ".
 								"		 alamat ".
-								"FROM dosen ".
+								"FROM guru ".
 								"WHERE kode = $kode");
 		return $rs;		
 	}
 	
 	function get_search($search){
 		$rs = $this->db->query(	"SELECT kode, ".
-								"		 nidn,".
+								"		 nip,".
 								"		 nama,".
 								"		 telp, ".
 								"		 alamat ".
-								"FROM dosen ".
+								"FROM guru ".
 								"WHERE nama LIKE '%$search%'");
 		return $rs;		
 	}
     
     function num_page(){
     	
-    	$result = $this->db->from('dosen')
+    	$result = $this->db->from('guru')
                            ->count_all_results();
         return $result;
     }
     
     function insert($data){
-        $this->db->insert('dosen',$data);		
+        $this->db->insert('guru',$data);		
     }
     
     function update($kode,$data){
         $this->db->where('kode',$kode);
-        $this->db->update('dosen',$data);
+        $this->db->update('guru',$data);
     }
     
     function delete($kode){
-        $this->db->query("DELETE FROM dosen WHERE kode='$kode'");
+        $this->db->query("DELETE FROM guru WHERE kode='$kode'");
     }
 	
 	function cek_for_insert($nama){
 		/*
 		
 		var check = string.Format("SELECT CAST(COUNT(*) AS CHAR(1)) " +
-                                          "FROM dosen " +
-                                          "WHERE kode={0} OR nidn='{1}'",
-                                          int.Parse(txtKode.Text), txtNIDN.Text);
+                                          "FROM guru " +
+                                          "WHERE kode={0} OR nip='{1}'",
+                                          int.Parse(txtKode.Text), txtnip.Text);
                 var i = int.Parse(_dbConnect.ExecuteScalar(check));
 		*/
 		$rs = $this->db->query("SELECT CAST(COUNT(*) AS CHAR(1)) as cnt ".
-							   "FROM dosen ".
+							   "FROM guru ".
 							   "WHERE nama='$nama'");
 		return $rs->row()->cnt;
 	}
 	
-	function cek_for_update($kode_baru,$nidn,$kode_lama){
+	function cek_for_update($kode_baru,$nip,$kode_lama){
 		$rs = $this->db->query("SELECT CAST(COUNT(*) AS CHAR(1)) as cnt ".
-							   "FROM dosen ".
-							   "WHERE (kode=$kode_baru OR nidn='$nidn') AND kode <> $kode_lama");
+							   "FROM guru ".
+							   "WHERE (kode=$kode_baru OR nip='$nip') AND kode <> $kode_lama");
 		return $rs->row()->cnt;
 	}
 }

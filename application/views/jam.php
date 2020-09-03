@@ -10,24 +10,17 @@
    <div class="container-fluid">
          <?php if($this->session->flashdata('msg')) { ?>                        
             <div class="alert alert-error">
-              <button type="button" class="close" data-dismiss="alert">×</button>                
+              <button type="button" class="close" data-dismiss="alert">ï¿½</button>                
               <?php echo $this->session->flashdata('msg');?>
             </div>  
         <?php } ?>  
 
       <div class="row-fluid">
         <a href="<?php echo base_url() . 'web/jam_add';?>"> <button class="btn btn-primary pull-right"><i class="icon-plus"></i> Konten Baru</button></a>     
-        <!--
-        <form class="form-inline" method="POST" action="<?php echo base_url() . 'web/jam_search'?>">
-          <input type="text" placeholder="Nama" name="search_query" value="<?php echo isset($search_query) ? $search_query : '' ;?>">
-          <button type="submit" class="btn">Cari</button>
-          <a href="<?php echo base_url() . 'web/jam';?>"><button type="button" class="btn">Clear</button> </a>
-        </form>
-		-->
 		<br><br>
 		<?php if($rs_jam->num_rows() === 0):?>
 		<div class="alert alert-error">
-            <button type="button" class="close" data-dismiss="alert">×</button>             
+            <button type="button" class="close" data-dismiss="alert">ï¿½</button>             
 			Tidak ada data.
         </div>  
 		<?php else: ?> 	
@@ -35,7 +28,7 @@
               <table class="table table-striped table-bordered">
                  <thead>
                     <tr>                       
-                       <th>#</th>
+                       <th>Sesi</th>
                        <th>Range Jam</th>                       
                        <th style="width: 65px;"></th>
                     </tr>

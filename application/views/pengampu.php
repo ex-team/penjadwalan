@@ -30,29 +30,15 @@
             
           <label>Tahun Akademik</label>
           <select id="tahun_akademik" name="tahun_akademik" class="input-xlarge" onchange="change_get()">
-            <!--<option value="2011-2012" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2011-2012' ? 'selected':'') : '' ;?> /> 2011-2012-->
-            <!--<option value="2012-2013" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2012-2013' ? 'selected':'') : '' ;?> /> 2012-2013-->
-            <!--<option value="2013-2014" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2013-2014' ? 'selected':'') : '' ;?> /> 2013-2014-->
-            <!--<option value="2014-2015" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2014-2015' ? 'selected':'') : '' ;?> /> 2014-2015-->
-            <!--<option value="2015-2016" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2015-2016' ? 'selected':'') : '' ;?> /> 2015-2016-->
-            <!--<option value="2016-2017" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2016-2017' ? 'selected':'') : '' ;?> /> 2016-2017-->
-            <!--<option value="2017-2018" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2017-2018' ? 'selected':'') : '' ;?> /> 2017-2018-->
-            <!--<option value="2018-2019" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2018-2019' ? 'selected':'') : '' ;?> /> 2018-2019-->
-            <!--<option value="2019-2020" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2019-2020' ? 'selected':'') : '' ;?> /> 2019-2020-->
-            
-			<option value="2011-2012" <?php echo $this->session->userdata('pengampu_tahun_akademik') === '2011-2012' ? 'selected':'' ;?> /> 2011-2012
-            <option value="2012-2013" <?php echo $this->session->userdata('pengampu_tahun_akademik') === '2012-2013' ? 'selected':'' ;?> /> 2012-2013
-            <option value="2013-2014" <?php echo $this->session->userdata('pengampu_tahun_akademik') === '2013-2014' ? 'selected':'' ;?> /> 2013-2014
-            <option value="2014-2015" <?php echo $this->session->userdata('pengampu_tahun_akademik') === '2014-2015' ? 'selected':'' ;?> /> 2014-2015
-            <option value="2015-2016" <?php echo $this->session->userdata('pengampu_tahun_akademik') === '2015-2016' ? 'selected':'' ;?> /> 2015-2016
-            <option value="2016-2017" <?php echo $this->session->userdata('pengampu_tahun_akademik') === '2016-2017' ? 'selected':'' ;?> /> 2016-2017
-            <option value="2017-2018" <?php echo $this->session->userdata('pengampu_tahun_akademik') === '2017-2018' ? 'selected':'' ;?> /> 2017-2018
-            <option value="2018-2019" <?php echo $this->session->userdata('pengampu_tahun_akademik') === '2018-2019' ? 'selected':'' ;?> /> 2018-2019
             <option value="2019-2020" <?php echo $this->session->userdata('pengampu_tahun_akademik') === '2019-2020' ? 'selected':'' ;?> /> 2019-2020
-			
+            <option value="2020-2021" <?php echo $this->session->userdata('pengampu_tahun_akademik') === '2020-2021' ? 'selected':'' ;?> /> 2020-2021
+            <option value="2021-2022" <?php echo $this->session->userdata('pengampu_tahun_akademik') === '2021-2022' ? 'selected':'' ;?> /> 2021-2022
+            <option value="2022-2023" <?php echo $this->session->userdata('pengampu_tahun_akademik') === '2022-2023' ? 'selected':'' ;?> /> 2022-2023
+            <option value="2023-2024" <?php echo $this->session->userdata('pengampu_tahun_akademik') === '2023-2024' ? 'selected':'' ;?> /> 2023-2024
+            <option value="2024-2025" <?php echo $this->session->userdata('pengampu_tahun_akademik') === '2024-2025' ? 'selected':'' ;?> /> 2024-2025
           </select>
             
-          <label>Dosen / Matakuliah</label>  
+          <label>Guru / Mata Pelajaran</label>  
           <input type="text" name="search_query" value="<?php echo isset($search_query) ? $search_query : '' ;?>">  
           
           <div class="form">
@@ -63,7 +49,7 @@
 		
 		<?php if($rs_pengampu->num_rows() === 0):?>
 		<div class="alert alert-error">
-            <button type="button" class="close" data-dismiss="alert">×</button>             
+            <button type="button" class="close" data-dismiss="alert">ï¿½</button>             
 			Tidak ada data.
         </div>  
 		<?php else: ?> 
@@ -80,8 +66,8 @@
                  <thead>
                     <tr>
 					   <th>#</th>
-                       <th>Matakuliah</th>
-                       <th>Dosen</th>
+                       <th>Mata Pelajaran</th>
+                       <th>Guru</th>
                        <th>Kelas</th>
                        <th>Tahun Akademik</th>
                        <th style="width: 65px;"></th>
@@ -94,8 +80,8 @@
                    foreach ($rs_pengampu->result() as $pengampu) { ?>
                    <tr<?php echo ' id="row_'.$pengampu->kode . '"';?>>
 					  <td><?php echo str_pad((int)$i,3,0,STR_PAD_LEFT);?></td> 
-                      <td><?php echo $pengampu->nama_mk;?></td>                    
-                      <td><?php echo $pengampu->nama_dosen;?></td>
+                      <td><?php echo $pengampu->nama_mp;?></td>                    
+                      <td><?php echo $pengampu->nama_guru;?></td>
                       <td><?php echo $pengampu->kelas;?></td>
                       <td><?php echo $pengampu->tahun_akademik;?></td>
                       

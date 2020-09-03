@@ -17,16 +17,16 @@ class Genetik extends CI_Controller
     
     private $pengampu = array();
     private $individu = array(array(array()));
-    private $sks = array();
-    private $dosen = array();
+    private $beban = array();
+    private $guru = array();
     
     private $jam = array();
     private $hari = array();
-    private $idosen = array();
+    private $iguru = array();
     
-    //waktu keinginan dosen
-    private $waktu_dosen = array(array());
-    private $jenis_mk = array(); //reguler or praktikum
+    //waktu keinginan guru
+    private $waktu_guru = array(array());
+    private $jenis_mp = array(); //reguler or praktikum
     
     private $ruangLaboratorium = array();
     private $ruangReguler = array();
@@ -40,7 +40,7 @@ class Genetik extends CI_Controller
     private $kode_jumat;
     private $range_jumat = array();
     private $kode_dhuhur;
-    private $is_waktu_dosen_tidak_bersedia_empty;
+    private $is_waktu_guru_tidak_bersedia_empty;
     
     
     
@@ -54,7 +54,7 @@ class Genetik extends CI_Controller
         $this->crossOver      = $crossOver;
         $this->mutasi         = $mutasi;
         $this->kode_jumat     = intval($kode_jumat);
-        $this->range_jumat    = explode('-',$range_jumat);//$hari_jam = explode(':', $this->waktu_dosen[$j][1]);
+        $this->range_jumat    = explode('-',$range_jumat);//$hari_jam = explode(':', $this->waktu_guru[$j][1]);
         $this->kode_dhuhur    = intval($kode_dhuhur);
        
     }
@@ -63,25 +63,25 @@ class Genetik extends CI_Controller
     {
         
         $rs_data = $this->db->query("SELECT   a.kode,"
-                                    . "       b.sks,"
-                                    . "       a.kode_dosen,"
+                                    . "       b.beban,"
+                                    . "       a.kode_guru,"
                                     . "       b.jenis "
                                     . "FROM pengampu a "
-                                    . "LEFT JOIN matakuliah b "
-                                    . "ON a.kode_mk = b.kode "
+                                    . "LEFT JOIN matapelajaran b "
+                                    . "ON a.kode_mp = b.kode "
                                     . "WHERE b.semester%2 = $this->jenis_semester "
                                     . "      AND a.tahun_akademik = '$this->tahun_akademik'");
         
         $i = 0;
         foreach ($rs_data->result() as $data) {
             $this->pengampu[$i] = intval($data->kode);
-            $this->sks[$i]         = intval($data->sks);
-            $this->dosen[$i]       = intval($data->kode_dosen);
-            $this->jenis_mk[$i]    = $data->jenis;
+            $this->beban[$i]         = intval($data->beban);
+            $this->guru[$i]       = intval($data->kode_guru);
+            $this->jenis_mp[$i]    = $data->jenis;
             $i++;
         }
         
-        //var_dump($this->jenis_mk);
+        //var_dump($this->jenis_mp);
         //exit();
         
         //Fill Array of Jam Variables
@@ -123,14 +123,14 @@ class Genetik extends CI_Controller
         //var_dump($this->ruangLaboratorium);
         //exit(0);
         
-        $rs_WaktuDosen = $this->db->query("SELECT kode_dosen,".
+        $rs_WaktuGuru = $this->db->query("SELECT kode_guru,".
                                           "CONCAT_WS(':',kode_hari,kode_jam) as kode_hari_jam ".
                                           "FROM waktu_tidak_bersedia");        
         $i             = 0;
-        foreach ($rs_WaktuDosen->result() as $data) {
-            $this->idosen[$i]         = intval($data->kode_dosen);
-            $this->waktu_dosen[$i][0] = intval($data->kode_dosen);
-            $this->waktu_dosen[$i][1] = $data->kode_hari_jam;
+        foreach ($rs_WaktuGuru->result() as $data) {
+            $this->iguru[$i]         = intval($data->kode_guru);
+            $this->waktu_guru[$i][0] = intval($data->kode_guru);
+            $this->waktu_guru[$i][1] = $data->kode_hari_jam;
             $i++;
         }  
      
@@ -151,33 +151,33 @@ class Genetik extends CI_Controller
             
             for ($j = 0; $j < $jumlah_pengampu; $j++) {
                 
-                $sks = $this->sks[$j];
+                $beban = $this->beban[$j];
                 
                 $this->individu[$i][$j][0] = $j;
                 
-                // Penentuan jam secara acak ketika 1 sks 
-                if ($sks == 1) {
+                // Penentuan jam secara acak ketika 1 beban 
+                if ($beban == 1) {
                     $this->individu[$i][$j][1] = mt_rand(0,  $jumlah_jam - 1);
                 }
                 
-                // Penentuan jam secara acak ketika 2 sks 
-                if ($sks == 2) {
+                // Penentuan jam secara acak ketika 2 beban 
+                if ($beban == 2) {
                     $this->individu[$i][$j][1] = mt_rand(0, ($jumlah_jam - 1) - 1);
                 }
                 
-                // Penentuan jam secara acak ketika 3 sks
-                if ($sks == 3) {
+                // Penentuan jam secara acak ketika 3 beban
+                if ($beban == 3) {
                     $this->individu[$i][$j][1] = mt_rand(0, ($jumlah_jam - 1) - 2);
                 }
                 
-                // Penentuan jam secara acak ketika 4 sks
-                if ($sks == 4) {
+                // Penentuan jam secara acak ketika 4 beban
+                if ($beban == 4) {
                     $this->individu[$i][$j][1] = mt_rand(0, ($jumlah_jam - 1) - 3);
                 }
                 
                 $this->individu[$i][$j][2] = mt_rand(0, $jumlah_hari - 1); // Penentuan hari secara acak 
                 
-                if ($this->jenis_mk[$j] === $this->TEORI) {
+                if ($this->jenis_mp[$j] === $this->TEORI) {
                     $this->individu[$i][$j][3] = intval($this->ruangReguler[mt_rand(0, $jumlah_ruang_reguler - 1)]);
                 } else {
                     $this->individu[$i][$j][3] = intval($this->ruangLaboratorium[mt_rand(0, $jumlah_ruang_lab - 1)]);                    
@@ -203,12 +203,12 @@ class Genetik extends CI_Controller
         for ($i = 0; $i < $jumlah_pengampu; $i++)
         {
           
-          $sks = intval($this->sks[$i]);
+          $beban = intval($this->beban[$i]);
           
           $jam_a = intval($this->individu[$indv][$i][1]);
           $hari_a = intval($this->individu[$indv][$i][2]);
           $ruang_a = intval($this->individu[$indv][$i][3]);
-          $dosen_a = intval($this->dosen[$i]);        
+          $guru_a = intval($this->guru[$i]);        
           
           
             for ($j = 0; $j < $jumlah_pengampu; $j++) {                 
@@ -216,12 +216,12 @@ class Genetik extends CI_Controller
                 $jam_b = intval($this->individu[$indv][$j][1]);
                 $hari_b = intval($this->individu[$indv][$j][2]);
                 $ruang_b = intval($this->individu[$indv][$j][3]);
-                $dosen_b = intval($this->dosen[$j]);
+                $guru_b = intval($this->guru[$j]);
                   
                   
-                //1.bentrok ruang dan waktu dan 3.bentrok dosen
+                //1.bentrok ruang dan waktu dan 3.bentrok guru
                 
-                //ketika pemasaran matakuliah sama, maka langsung ke perulangan berikutnya
+                //ketika pemasaran matapelajaran sama, maka langsung ke perulangan berikutnya
                 if ($i == $j)
                     continue;
                 
@@ -234,10 +234,10 @@ class Genetik extends CI_Controller
                     $penalty += 1;
                 }
                 
-                //Ketika sks  = 2, 
+                //Ketika beban  = 2, 
                 //hari dan ruang sama, dan 
-                //jam kedua sama dengan jam pertama matakuliah yang lain, maka penalty + 1
-                if ($sks >= 2)
+                //jam kedua sama dengan jam pertama matapelajaran yang lain, maka penalty + 1
+                if ($beban >= 2)
                 {
                     if ($jam_a + 1 == $jam_b &&
                         $hari_a == $hari_b &&
@@ -248,10 +248,10 @@ class Genetik extends CI_Controller
                 }
                 
                 
-                //Ketika sks  = 3, 
+                //Ketika beban  = 3, 
                 //hari dan ruang sama dan 
-                //jam ketiga sama dengan jam pertama matakuliah yang lain, maka penalty + 1
-                if ($sks >= 3) {
+                //jam ketiga sama dengan jam pertama matapelajaran yang lain, maka penalty + 1
+                if ($beban >= 3) {
                     if ($jam_a + 2 == $jam_b &&
                         $hari_a == $hari_b &&
                         $ruang_a == $ruang_b)
@@ -260,10 +260,10 @@ class Genetik extends CI_Controller
                     }
                 }
                 
-                //Ketika sks  = 4, 
+                //Ketika beban  = 4, 
                 //hari dan ruang sama dan 
-                //jam ketiga sama dengan jam pertama matakuliah yang lain, maka penalty + 1
-                if ($sks >= 4) {
+                //jam ketiga sama dengan jam pertama matapelajaran yang lain, maka penalty + 1
+                if ($beban >= 4) {
                     if ($jam_a + 3 == $jam_b &&
                         $hari_a == $hari_b &&
                         $ruang_a == $ruang_b)
@@ -272,14 +272,14 @@ class Genetik extends CI_Controller
                     }
                 }
                 
-                //______________________BENTROK DOSEN
+                //______________________BENTROK guru
                 if (
                 //ketika jam sama
                     $jam_a == $jam_b && 
                 //dan hari sama
                     $hari_a == $hari_b && 
-                //dan dosennya sama
-                    $dosen_a == $dosen_b)
+                //dan gurunya sama
+                    $guru_a == $guru_b)
                 {
                   //maka...
                   $penalty += 1;
@@ -287,42 +287,42 @@ class Genetik extends CI_Controller
                 
                 
                 
-                if ($sks >= 2) {
+                if ($beban >= 2) {
                     if (
                     //ketika jam sama
                       ($jam_a + 1) == $jam_b && 
                     //dan hari sama
                       $hari_a == $hari_b && 
-                    //dan dosennya sama
-                      $dosen_a == $dosen_b)
+                    //dan gurunya sama
+                      $guru_a == $guru_b)
                     {
                       //maka...
                       $penalty += 1;
                     }
                 }
                 
-                if ($sks >= 3) {
+                if ($beban >= 3) {
                     if (
                     //ketika jam sama
                       ($jam_a + 2) == $jam_b && 
                     //dan hari sama
                       $hari_a == $hari_b && 
-                    //dan dosennya sama
-                      $dosen_a == $dosen_b)
+                    //dan gurunya sama
+                      $guru_a == $guru_b)
                     {
                       //maka...
                       $penalty += 1;
                     }
                 }
                 
-                if ($sks >= 4) {
+                if ($beban >= 4) {
                     if (
                     //ketika jam sama
                       ($jam_a + 3) == $jam_b && 
                     //dan hari sama
                       $hari_a == $hari_b && 
-                    //dan dosennya sama
-                      $dosen_a == $dosen_b)
+                    //dan gurunya sama
+                      $guru_a == $guru_b)
                     {
                       //maka...
                       $penalty += 1;
@@ -335,7 +335,7 @@ class Genetik extends CI_Controller
             if (($hari_a  + 1) == $hari_jumat) //2.bentrok sholat jumat
             {
                 
-                if ($sks == 1)
+                if ($beban == 1)
                 {
                    if (
                        
@@ -351,7 +351,7 @@ class Genetik extends CI_Controller
                 }
                 
                 
-                if ($sks == 2)
+                if ($beban == 2)
                 {
                     if (
                           ($jam_a == ($jumat_0 - 2)) ||
@@ -361,7 +361,7 @@ class Genetik extends CI_Controller
                         )
                     {
                         /*
-                        echo '$sks = ' . $sks. '<br>';
+                        echo '$beban = ' . $beban. '<br>';
                         echo '$jam_a = ' . $jam_a. '<br>';
                         echo '($jumat_0 - 2) = ' . ($jumat_0 - 2) . '<br>';
                         echo '($jumat_0 - 1) = ' . ($jumat_0 - 1). '<br>';
@@ -374,7 +374,7 @@ class Genetik extends CI_Controller
                     }
                 }
                 
-                if ($sks == 3)
+                if ($beban == 3)
                 {
                     if (
                           ($jam_a == ($jumat_0 - 3)) ||
@@ -388,7 +388,7 @@ class Genetik extends CI_Controller
                     }
                 }
                 
-                if ($sks == 4)
+                if ($beban == 4)
                 {
                     if (
                           ($jam_a == ($jumat_0 - 4)) ||
@@ -405,16 +405,16 @@ class Genetik extends CI_Controller
             }
             //#endregion
             
-            //#region Bentrok dengan Waktu Keinginan Dosen
-            //Boolean penaltyForKeinginanDosen = false;
+            //#region Bentrok dengan Waktu Keinginan guru
+            //Boolean penaltyForKeinginanguru = false;
             
-            $jumlah_waktu_tidak_bersedia = count($this->idosen);
+            $jumlah_waktu_tidak_bersedia = count($this->iguru);
             
             for ($j = 0; $j < $jumlah_waktu_tidak_bersedia; $j++)
             {
-                if ($dosen_a == $this->idosen[$j])
+                if ($guru_a == $this->iguru[$j])
                 {
-                    $hari_jam = explode(':', $this->waktu_dosen[$j][1]);
+                    $hari_jam = explode(':', $this->waktu_guru[$j][1]);
                     
                     if ($this->jam[$jam_a] == $hari_jam[1] &&
                         $this->hari[$hari_a] == $hari_jam[0])
@@ -447,8 +447,8 @@ class Genetik extends CI_Controller
         //hard constraint
         //1.bentrok ruang dan waktu
         //2.bentrok sholat jumat
-        //3.bentrok dosen
-        //4.bentrok keinginan waktu dosen 
+        //3.bentrok guru
+        //4.bentrok keinginan waktu guru 
         //5.bentrok waktu dhuhur 
         //=>6.praktikum harus pada ruang lab {telah ditetapkan dari awal perandoman
         //    bahwa jika praktikum harus ada pada LAB dan mata kuliah reguler harus 
@@ -603,10 +603,10 @@ class Genetik extends CI_Controller
             //maka terjadi penggantian komponen
             
             if ($r < $this->mutasi) {
-                //Penentuan pada matakuliah dan kelas yang mana yang akan dirandomkan atau diganti
+                //Penentuan pada matapelajaran dan kelas yang mana yang akan dirandompan atau diganti
                 $krom = mt_rand(0, $jumlah_pengampu - 1);
                 
-                $j = intval($this->sks[$krom]);
+                $j = intval($this->beban[$krom]);
                 
                 switch ($j) {
                     case 1:
@@ -627,7 +627,7 @@ class Genetik extends CI_Controller
                 
                 //proses penggantian ruang               
                 
-                if ($this->jenis_mk[$krom] === $this->TEORI) {
+                if ($this->jenis_mp[$krom] === $this->TEORI) {
                     $this->individu[$i][$krom][3] = $this->ruangReguler[mt_rand(0, $jumlah_ruang_reguler - 1)];
                 } else {
                     $this->individu[$i][$krom][3] = $this->ruangLaboratorium[mt_rand(0, $jumlah_ruang_lab - 1)];

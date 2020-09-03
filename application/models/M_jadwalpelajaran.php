@@ -1,6 +1,6 @@
 <?php
 
-class M_Jadwalkuliah extends CI_Model{
+class M_Jadwalpelajaran extends CI_Model{
 
 	public $limit;
 	public $offset;
@@ -20,27 +20,27 @@ class M_Jadwalkuliah extends CI_Model{
 								"                                  FROM jam ". 
 								"                                  WHERE kode = (SELECT jm.kode ".
 								"                                                FROM jam jm  ".
-								"                                                WHERE MID(jm.range_jam,1,5) = MID(g.range_jam,1,5)) + (c.sks - 1)),')')) as sesi, ". 
+								"                                                WHERE MID(jm.range_jam,1,5) = MID(g.range_jam,1,5)) + (c.beban - 1)),')')) as sesi, ". 
 								" 		  Concat_WS('-', MID(g.range_jam,1,5),".
 								"                (SELECT MID(range_jam,7,5) ".
 								"                 FROM jam ".
 								"                 WHERE kode = (SELECT jm.kode ".
 								"                               FROM jam jm ".
-								"                               WHERE MID(jm.range_jam,1,5) = MID(g.range_jam,1,5)) + (c.sks - 1))) as jam_kuliah, ".
+								"                               WHERE MID(jm.range_jam,1,5) = MID(g.range_jam,1,5)) + (c.beban - 1))) as jam_kuliah, ".
 			   
-								"        c.nama as nama_mk,".
-								"        c.sks as sks,".
+								"        c.nama as nama_mp,".
+								"        c.beban as beban,".
 								"        c.semester as semester,".
 								"        b.kelas as kelas,".
-								"        d.nama as dosen,".
+								"        d.nama as guru,".
 								"        f.nama as ruang ".
-								"FROM jadwalkuliah a ".
+								"FROM jadwalpelajaran a ".
 								"LEFT JOIN pengampu b ".
 								"ON a.kode_pengampu = b.kode ".
-								"LEFT JOIN matakuliah c ".
-								"ON b.kode_mk = c.kode ".
-								"LEFT JOIN dosen d ".
-								"ON b.kode_dosen = d.kode ".
+								"LEFT JOIN matapelajaran c ".
+								"ON b.kode_mp = c.kode ".
+								"LEFT JOIN guru d ".
+								"ON b.kode_guru = d.kode ".
 								"LEFT JOIN hari e ".
 								"ON a.kode_hari = e.kode ".
 								"LEFT JOIN ruang f ".

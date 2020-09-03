@@ -4,7 +4,7 @@
    </div>
    <ul class="breadcrumb">
       <li><a href="<?php echo base_url();?>">Beranda</a> <span class="divider">/</span></li>
-      <li><a href="<?php echo base_url();?>web/matakuliah">Modul Matakuliah</a> <span class="divider">/</span></li>
+      <li><a href="<?php echo base_url();?>web/matapelajaran">Modul Mata Pelajaran</a> <span class="divider">/</span></li>
       <li class="active">Tambah Data</li>
    </ul>
    
@@ -12,7 +12,7 @@
       <div class="row-fluid">
         <?php if(isset($msg)) { ?>                        
               <div class="alert alert-error">
-                <button type="button" class="close" data-dismiss="alert">×</button>                
+                <button type="button" class="close" data-dismiss="alert">ï¿½</button>                
                 <?php echo $msg;?>
               </div>  
         <?php } ?>    
@@ -20,8 +20,8 @@
 
 
         <form id="tab" method="POST" >
-            <label>Kode Matakuliah</label>
-            <input id="kode_mk" type="text" value="<?php echo set_value('kode_mk');?>" name="kode_mk" class="input-xlarge" />
+            <label>Kode Mata Pelajaran</label>
+            <input id="kode_mp" type="text" value="<?php echo set_value('kode_mp');?>" name="kode_mp" class="input-xlarge" />
             
             <label>Nama</label>
             <input id="nama" type="text" value="<?php echo set_value('nama');?>" name="nama" class="input-xlarge" />
@@ -32,8 +32,8 @@
               <option value="PRAKTIKUM" <?php echo set_select('jenis','PRAKTIKUM');?> /> PRAKTIKUM            
             </select>
             
-            <label>SKS</label>
-            <input id="sks" type="text" value="<?php echo set_value('sks');?>" name="sks" class="input-xsmall" />
+            <label>Beban Pelajaran</label>
+            <input id="beban" type="text" value="<?php echo set_value('beban');?>" name="beban" class="input-xsmall" />
             
             <label>Semester</label>
             <input id="semester" type="text" value="<?php echo set_value('semester');?>" name="semester" class="input-xsmall" />       
@@ -41,15 +41,11 @@
 			
             <div class="form-actions">
               <button type="submit" class="btn btn-primary">Save</button>
-              <a href="<?php echo base_url() .'web/matakuliah'; ?>"><button type="button" class="btn">Cancel</button></a>
+              <a href="<?php echo base_url() .'web/matapelajaran'; ?>"><button type="button" class="btn">Cancel</button></a>
             </div>
         </form>
 
-        <footer>
-          <hr />
-          <p class="pull-right">Design by <a href="http://www.portnine.com" target="_blank">Portnine</a></p>
-          <p>&copy; 2012 <a href="http://www.portnine.com" target="_blank">Portnine</a></p>
-        </footer>
+         
 
       </div>
    </div>

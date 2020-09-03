@@ -10,42 +10,44 @@
    <div class="container-fluid">
          <?php if($this->session->flashdata('msg')) { ?>                        
             <div class="alert alert-error">
-              <button type="button" class="close" data-dismiss="alert">x</button>                
+              <button type="button" class="close" data-dismiss="alert">ï¿½</button>                
               <?php echo $this->session->flashdata('msg');?>
             </div>  
         <?php } ?>  
 
       <div class="row-fluid">
-        <a href="<?php echo base_url() . 'web/dosen_add';?>"> <button class="btn btn-primary pull-right"><i class="icon-plus"></i> Konten Baru</button></a>     
+        <a href="<?php echo base_url() . 'web/matapelajaran_add';?>"> <button class="btn btn-primary pull-right"><i class="icon-plus"></i> Data Baru</button></a>     
         
-        <form class="form-inline" method="POST" action="<?php echo base_url() . 'web/dosen_search'?>">
+        <form class="form-inline" method="POST" action="<?php echo base_url() . 'web/matapelajaran_search'?>">
           <input type="text" placeholder="Nama" name="search_query" value="<?php echo isset($search_query) ? $search_query : '' ;?>">
           <button type="submit" class="btn">Cari</button>
-          <a href="<?php echo base_url() . 'web/dosen';?>"><button type="button" class="btn">Clear</button> </a>
+          <a href="<?php echo base_url() . 'web/matapelajaran';?>"><button type="button" class="btn">Clear</button> </a>
         </form>
 		
-		<?php if($rs_dosen->num_rows() === 0):?>
+		<?php if($rs_mp->num_rows() === 0):?>
 		<div class="alert alert-error">
-            <button type="button" class="close" data-dismiss="alert">×</button>             
+            <button type="button" class="close" data-dismiss="alert">x</button>             
 			Tidak ada data.
         </div>  
 		<?php else: ?> 
 		<div id="content_ajax">
-		 
           <div class="pagination" id="ajax_paging">
               <ul>
                   <?php echo $this->pagination->create_links();?>
               </ul>
           </div>           
 
-          <div class="widget-content">            
+          <div class="widget-content">
+            
               <table class="table table-striped table-bordered">
                  <thead>
                     <tr>
-					   <th>#</th>
-                       <th>NIDN</th>
+                       <th>#</th>
+                       <th>Kode Mata Pelajaran</th>
                        <th>Nama</th>
-                       <th>Telp</th>
+                       <th>Beban Pelajaran</th>
+                       <th>Semester</th>
+                       <th>Jenis</th>                       
                        <th style="width: 65px;"></th>
                     </tr>
                  </thead>
@@ -53,16 +55,18 @@
   
                  <?php 
                    $i =  intval($start_number) + 1;
-                   foreach ($rs_dosen->result() as $dosen) { ?>
+                   foreach ($rs_mp->result() as $mp) { ?>
                    <tr>
-					  <td><?php echo str_pad((int)$i,2,0,STR_PAD_LEFT);?></td> 
-                      <td><?php echo $dosen->nidn;?></td>                    
-                      <td><?php echo $dosen->nama;?></td>
-                      <td><?php echo $dosen->telp;?></td>                   
+                      <td><?php echo str_pad((int)$i,2,0,STR_PAD_LEFT);?></td>    
+                      <td><?php echo $mp->kode_mp;?></td>                    
+                      <td><?php echo $mp->nama;?></td>
+                      <td><?php echo $mp->beban;?> x 45 menit</td>
+                      <td><?php echo $mp->semester;?></td>
+                      <td><?php echo $mp->jenis;?></td>                      
                       
                       <td>
-                        <a href="<?php echo base_url() . 'web/dosen_edit/' .$dosen->kode;?>" class="btn btn-small"><i class="icon-pencil"></i></a>
-                        <a href="<?php echo base_url() . 'web/dosen_delete/' .$dosen->kode;?>" class="btn btn-small" onClick="return confirm('Anda yakin ingin menghapus data ini?')" ><i class="icon-trash"></i></a>
+                        <a href="<?php echo base_url() . 'web/matapelajaran_edit/' .$mp->kode;?>" class="btn btn-small"><i class="icon-pencil"></i></a>
+                        <a href="<?php echo base_url() . 'web/matapelajaran_delete/' .$mp->kode;?>" class="btn btn-small" onClick="return confirm('Anda yakin ingin menghapus data ini?')" ><i class="icon-trash"></i></a>
                       </td>
                    </tr>
                  <?php $i++;} ?>

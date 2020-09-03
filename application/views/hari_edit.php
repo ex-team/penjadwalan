@@ -13,7 +13,7 @@
       <div class="row-fluid">
         <?php if(isset($msg)) { ?>                        
               <div class="alert alert-error">
-                <button type="button" class="close" data-dismiss="alert">×</button>                
+                <button type="button" class="close" data-dismiss="alert">ï¿½</button>                
                 <?php echo $msg;?>
               </div>  
         <?php } ?>    
@@ -27,12 +27,6 @@
               <a href="<?php echo base_url() .'web/hari'; ?>"><button type="button" class="btn">Cancel</button></a>
             </div>
         </form>
-
-        <footer>
-          <hr />
-          <p class="pull-right">Design by <a href="http://www.portnine.com" target="_blank">Portnine</a></p>
-          <p>&copy; 2012 <a href="http://www.portnine.com" target="_blank">Portnine</a></p>
-        </footer>
       </div>
    </div>
 </div>      

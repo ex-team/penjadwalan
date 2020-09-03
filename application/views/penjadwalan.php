@@ -34,10 +34,12 @@
 			  
 			<label>Tahun Akademik</label>
 			<select id="tahun_akademik" name="tahun_akademik" class="input-xlarge">
-			  <option value="2011-2012" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2011-2012' ? 'selected':'') : '' ;?> /> 2011-2012
-			  <option value="2017-2018" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2017-2018' ? 'selected':'') : '' ;?> /> 2017-2018
-			  <option value="2018-2019" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2018-2019' ? 'selected':'') : '' ;?> /> 2018-2019
 			  <option value="2019-2020" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2019-2020' ? 'selected':'') : '' ;?> /> 2019-2020
+        <option value="2020-2021" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2020-2021' ? 'selected':'') : '' ;?> /> 2020-2021
+        <option value="2021-2022" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2021-2022' ? 'selected':'') : '' ;?> /> 2021-2022
+        <option value="2022-2023" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2022-2023' ? 'selected':'') : '' ;?> /> 2022-2023
+        <option value="2023-2024" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2023-2024' ? 'selected':'') : '' ;?> /> 2023-2024
+        <option value="2024-2025" <?php echo isset($tahun_akademik) ? ($tahun_akademik === '2024-2025' ? 'selected':'') : '' ;?> /> 2024-2025
 			</select>
 			  
 			<label>Jumlah Populasi</label>  
@@ -94,11 +96,11 @@
                        <th>Hari</th>
                        <th>Sesi</th>
                        <th>Jam</th>
-                       <th>Matakuliah</th>
-                       <th>SKS</th>
+                       <th>Mata Pelajaran</th>
+                       <th>Beban Pelajaran</th>
                        <th>Semester</th>
                        <th>Kelas</th>
-                       <th>Dosen</th>
+                       <th>Guru</th>
                        <th>Ruang</th>
                        
                     </tr>
@@ -113,11 +115,11 @@
                       <td><?php echo $jadwal->hari;?></td>
                       <td><?php echo $jadwal->sesi;?></td>
                       <td><?php echo $jadwal->jam_kuliah;?></td>
-                      <td><?php echo $jadwal->nama_mk;?></td>
-                      <td><?php echo $jadwal->sks;?></td>
+                      <td><?php echo $jadwal->nama_mp;?></td>
+                      <td><?php echo $jadwal->beban;?> x 45 menit</td>
                       <td><?php echo $jadwal->semester;?></td>
                       <td><?php echo $jadwal->kelas;?></td>
-                      <td><?php echo $jadwal->dosen;?></td>
+                      <td><?php echo $jadwal->guru;?></td>
                       <td><?php echo $jadwal->ruang;?></td>                    
                    </tr>
                  <?php $i++;} ?>
@@ -134,11 +136,6 @@
           </div>           
         </div>
         <?php endif; ?>
-         <footer>
-            <hr />
-            <p class="pull-right">Design by <a href="http://www.portnine.com" target="_blank">Portnine</a></p>
-            <p>&copy; 2012 <a href="http://www.portnine.com" target="_blank">Portnine</a></p>
-         </footer>
       </div>
    </div>
 </div>

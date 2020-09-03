@@ -9,8 +9,8 @@
                  <thead>
                     <tr>
 					   <th>#</th>
-                       <th>Matakuliah</th>
-                       <th>Dosen</th>
+                       <th>Mata Pelajaran</th>
+                       <th>Guru</th>
                        <th>Kelas</th>
                        <th>Tahun Akademik</th>
                        <th style="width: 65px;"></th>
@@ -23,8 +23,8 @@
                    foreach ($rs_pengampu->result() as $pengampu) { ?>
                    <tr>
 					  <td><?php echo str_pad((int)$i,3,0,STR_PAD_LEFT);?></td> 
-                      <td><?php echo $pengampu->nama_mk;?></td>                    
-                      <td><?php echo $pengampu->nama_dosen;?></td>
+                      <td><?php echo $pengampu->nama_mp;?></td>                    
+                      <td><?php echo $pengampu->nama_guru;?></td>
                       <td><?php echo $pengampu->kelas;?></td>
                       <td><?php echo $pengampu->tahun_akademik;?></td>
                       

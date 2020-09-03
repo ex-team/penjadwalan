@@ -15,10 +15,10 @@
       <?php } ?>  
       <div class="row-fluid">
          <form class="form" method="POST">
-            <label>Dosen</label>
-            <select id = "kode_dosen" name="kode_dosen" class="input-xlarge" onchange="change_dosen_tidak_bersedia()">
-               <?php foreach($rs_dosen->result() as $dosen) { ?>
-               <option value="<?php echo $dosen->kode;?>" <?php echo isset($kode_dosen) ? ($kode_dosen === $dosen->kode ? 'selected':'') : '' ;?> /> <?php echo $dosen->nama;?>
+            <label>Guru</label>
+            <select id = "kode_guru" name="kode_guru" class="input-xlarge" onchange="change_guru_tidak_bersedia()">
+               <?php foreach($rs_guru->result() as $guru) { ?>
+               <option value="<?php echo $guru->kode;?>" <?php echo isset($kode_guru) ? ($kode_guru === $guru->kode ? 'selected':'') : '' ;?> /> <?php echo $guru->nama;?>
                   <?php } ?>
             </select>
             <div class="form">
@@ -52,7 +52,7 @@
                              }
                            } ?>
                         <td>
-                           <input type="checkbox" name="arr_tidak_bersedia[]" value="<?php echo $kode_dosen . '-'. $hari->kode . '-' . $jam->kode ?>" <?php echo $status; ?>> Tidak Bersedia
+                           <input type="checkbox" name="arr_tidak_bersedia[]" value="<?php echo $kode_guru . '-'. $hari->kode . '-' . $jam->kode ?>" <?php echo $status; ?>> Tidak Bersedia
                         </td>
                      </tr>
                      <?php     

@@ -1,6 +1,6 @@
 <?php
 
-class M_Matakuliah extends CI_Model{
+class M_Matapelajaran extends CI_Model{
 
 	public $limit;
 	public $offset;
@@ -17,7 +17,7 @@ class M_Matakuliah extends CI_Model{
 	function get_by_semester_type($semester_type){
 		$rs = $this->db->query(
 								"SELECT * ".
-								"FROM matakuliah ".
+								"FROM matapelajaran ".
 								"WHERE semester%2=$semester_type ".
 								"ORDER BY nama");
 		return $rs;
@@ -29,12 +29,12 @@ class M_Matakuliah extends CI_Model{
 	function get(){
 		$rs = $this->db->query(
 							   "SELECT kode,".
-								"       kode_mk,".
+								"       kode_mp,".
 								"       nama,".
-								"       sks,".
+								"       beban,".
 								"       semester,".								
 								"       jenis ".
-								"FROM matakuliah ".
+								"FROM matapelajaran ".
 								"ORDER BY $this->sort $this->order ".
 								"LIMIT $this->offset,$this->limit");
 		return $rs;		
@@ -43,12 +43,12 @@ class M_Matakuliah extends CI_Model{
 	function get_all(){
 		$rs = $this->db->query(
 							   "SELECT kode,".
-								"       kode_mk,".
+								"       kode_mp,".
 								"       nama,".
-								"       sks,".
+								"       beban,".
 								"       semester,".								
 								"       jenis ".
-								"FROM matakuliah ");
+								"FROM matapelajaran ");
 					
 		return $rs;		
 	}
@@ -57,7 +57,7 @@ class M_Matakuliah extends CI_Model{
 		$rs = $this->db->query(
 							   "SELECT kode,".								
 								"       nama ".								
-								"FROM matakuliah ".
+								"FROM matapelajaran ".
 								"WHERE semester%2=$semester ORDER BY nama");
 		return $rs;		
 	}
@@ -65,60 +65,60 @@ class M_Matakuliah extends CI_Model{
 	function get_by_kode($kode){
 		$rs = $this->db->query(
 							   "SELECT kode,".
-								"       kode_mk,".
+								"       kode_mp,".
 								"       nama,".
-								"       sks,".
+								"       beban,".
 								"       semester,".								
 								"       jenis ".
-								"FROM matakuliah ".
+								"FROM matapelajaran ".
 								"WHERE kode= $kode");
 		return $rs;		
 	}
 	
 	function get_search($search){
 		$rs = $this->db->query(	"SELECT kode,".
-								"       kode_mk,".
+								"       kode_mp,".
 								"       nama,".
-								"       sks,".
+								"       beban,".
 								"       semester,".								
 								"       jenis ".
-								"FROM matakuliah ".								
+								"FROM matapelajaran ".								
 								"WHERE nama LIKE '%$search%'");
 		return $rs;		
 	}
 	
 	function num_page(){
     	
-    	$result = $this->db->from('matakuliah')
+    	$result = $this->db->from('matapelajaran')
                            ->count_all_results();
         return $result;
     }
 	
-	function cek_for_update($kode_mk,$nama,$kode){
+	function cek_for_update($kode_mp,$nama,$kode){
 		$rs = $this->db->query("SELECT CAST(COUNT(*) AS CHAR(1)) as cnt ".
-							   "FROM matakuliah ".
-							   "WHERE (kode_mk=$kode_mk OR nama='$nama') AND kode <> $kode");
+							   "FROM matapelajaran ".
+							   "WHERE (kode_mp=$kode_mp OR nama='$nama') AND kode <> $kode");
 		return $rs->row()->cnt;
 	}
 	
-	function cek_for_insert($kode_mk,$nama){
+	function cek_for_insert($kode_mp,$nama){
 		$rs = $this->db->query("SELECT CAST(COUNT(*) AS CHAR(1)) as cnt ".
-							   "FROM matakuliah ".
-							   "WHERE kode_mk=$kode_mk OR nama='$nama'");
+							   "FROM matapelajaran ".
+							   "WHERE kode_mp=$kode_mp OR nama='$nama'");
 		return $rs->row()->cnt;
 	}
 	
 	function update($kode,$data){
         $this->db->where('kode',$kode);
-        $this->db->update('matakuliah',$data);
+        $this->db->update('matapelajaran',$data);
     }
 	
 	function insert($data){
-        $this->db->insert('matakuliah',$data);		
+        $this->db->insert('matapelajaran',$data);		
     }
 	
 	function delete($kode){
-		$this->db->query("DELETE FROM matakuliah WHERE kode = '$kode'");
+		$this->db->query("DELETE FROM matapelajaran WHERE kode = '$kode'");
 	}
 	
 }

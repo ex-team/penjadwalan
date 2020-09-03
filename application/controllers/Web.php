@@ -9,14 +9,14 @@ class Web extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model(['m_dosen',
-            'm_matakuliah',
+        $this->load->model(['m_guru',
+            'm_matapelajaran',
             'm_ruang',
             'm_jam',
             'm_hari',
             'm_pengampu',
             'm_waktu_tidak_bersedia',
-            'm_jadwalkuliah', ]);
+            'm_jadwalpelajaran', ]);
         include_once 'genetik.php';
         define('IS_TEST', 'FALSE');
     }
@@ -36,57 +36,57 @@ class Web extends CI_Controller
     }
 
     /*********************************************************************************************/
-    public function dosen()
+    public function guru()
     {
         $data = [];
 
-        $data['page_title'] = 'Modul Dosen';
-        $url = base_url().'web/dosen/';
-        $res = $this->m_dosen->num_page();
+        $data['page_title'] = 'Modul Guru';
+        $url = base_url().'web/guru/';
+        $res = $this->m_guru->num_page();
         $per_page = 20;
 
         $config = admin_paginate($url, $res, $per_page, 3);
         $this->pagination->initialize($config);
 
-        $this->m_dosen->limit = $per_page;
+        $this->m_guru->limit = $per_page;
 
         if ($this->uri->segment(3) == true) {
-            $this->m_dosen->offset = $this->uri->segment(3);
+            $this->m_guru->offset = $this->uri->segment(3);
         } else {
-            $this->m_dosen->offset = 0;
+            $this->m_guru->offset = 0;
         }
 
-        $data['start_number'] = $this->m_dosen->offset;
-        $this->m_dosen->sort = 'nama';
-        $this->m_dosen->order = 'ASC';
-        $data['rs_dosen'] = $this->m_dosen->get();
+        $data['start_number'] = $this->m_guru->offset;
+        $this->m_guru->sort = 'nama';
+        $this->m_guru->order = 'ASC';
+        $data['rs_guru'] = $this->m_guru->get();
 
         if ($this->input->post('ajax')) {
-            $this->load->view('dosen_ajax', $data);
+            $this->load->view('guru_ajax', $data);
         } else {
-            $data['page_name'] = 'dosen';
+            $data['page_name'] = 'guru';
             $this->render_view($data);
         }
     }
 
-    public function dosen_add()
+    public function guru_add()
     {
         $data = [];
 
         if (!empty($_POST)) {
-            $this->form_validation->set_rules('nidn', 'NIDN', 'xss_clean');
-            $this->form_validation->set_rules('nama', 'Nama', 'xss_clean|required|is_unique[dosen.nama]');
+            $this->form_validation->set_rules('nip', 'NIP', 'xss_clean');
+            $this->form_validation->set_rules('nama', 'Nama', 'xss_clean|required|is_unique[guru.nama]');
             $this->form_validation->set_rules('alamat', 'Alamat', 'xss_clean');
             $this->form_validation->set_rules('telp', 'Telephon', 'xss_clean');
 
             if ($this->form_validation->run() == true) {
-                $data['nidn'] = $this->input->post('nidn');
+                $data['nip'] = $this->input->post('nip');
                 $data['nama'] = $this->input->post('nama');
                 $data['alamat'] = $this->input->post('alamat');
                 $data['telp'] = $this->input->post('telp');
 
                 if (IS_TEST === 'FALSE') {
-                    $this->m_dosen->insert($data);
+                    $this->m_guru->insert($data);
                     $data['msg'] = 'Data Telah Berhasil Ditambahkan';
                     $data['clear_text_box'] = 'TRUE';
                 } else {
@@ -97,30 +97,30 @@ class Web extends CI_Controller
             }
         }
 
-        $data['page_name'] = 'dosen_add';
-        $data['page_title'] = 'Modul Dosen Add';
+        $data['page_name'] = 'guru_add';
+        $data['page_title'] = 'Modul Guru Add';
 
         $this->render_view($data);
     }
 
-    public function dosen_edit($kode)
+    public function guru_edit($kode)
     {
         $data = [];
 
         if (!empty($_POST)) {
-            $this->form_validation->set_rules('nidn', 'NIDN', 'xss_clean|required');
+            $this->form_validation->set_rules('nip', 'NIP', 'xss_clean|required');
             $this->form_validation->set_rules('nama', 'Nama', 'xss_clean|required');
             $this->form_validation->set_rules('alamat', 'Alamat', 'xss_clean');
             $this->form_validation->set_rules('telp', 'Telephon', 'xss_clean');
 
             if ($this->form_validation->run() == true) {
-                $data['nidn'] = $this->input->post('nidn');
+                $data['nip'] = $this->input->post('nip');
                 $data['nama'] = $this->input->post('nama');
                 $data['alamat'] = $this->input->post('alamat');
                 $data['telp'] = $this->input->post('telp');
 
                 if (IS_TEST === 'FALSE') {
-                    $this->m_dosen->update($kode, $data);
+                    $this->m_guru->update($kode, $data);
                     $data['msg'] = 'Data telah berhasil dirubah';
                 } else {
                     $data['msg'] = 'WARNING: READ ONLY !';
@@ -130,33 +130,33 @@ class Web extends CI_Controller
             }
         }
 
-        $data['page_name'] = 'dosen_edit';
-        $data['page_title'] = 'Modul Dosen Edit';
-        $data['rs_dosen'] = $this->m_dosen->get_by_kode($kode);
+        $data['page_name'] = 'guru_edit';
+        $data['page_title'] = 'Modul guru Edit';
+        $data['rs_guru'] = $this->m_guru->get_by_kode($kode);
         $this->render_view($data);
     }
 
-    public function dosen_delete($kode)
+    public function guru_delete($kode)
     {
         if (IS_TEST === 'FALSE') {
-            $this->m_dosen->delete($kode);
-            $this->m_pengampu->delete_by_kode_dosen($kode);
-            $this->m_waktu_tidak_bersedia->delete_by_dosen($kode);
+            $this->m_guru->delete($kode);
+            $this->m_pengampu->delete_by_kode_guru($kode);
+            $this->m_waktu_tidak_bersedia->delete_by_guru($kode);
             $this->session->set_flashdata('msg', 'Data telah berhasil dihapus');
         } else {
             $this->session->set_flashdata('msg', 'WARNING: READ ONLY !');
         }
 
-        redirect(base_url().'web/dosen', 'reload');
+        redirect(base_url().'web/guru', 'reload');
     }
 
-    public function dosen_search()
+    public function guru_search()
     {
         $search_query = $this->input->post('search_query');
 
-        $data['rs_dosen'] = $this->m_dosen->get_search($search_query);
-        $data['page_title'] = 'Cari Dosen';
-        $data['page_name'] = 'dosen';
+        $data['rs_guru'] = $this->m_guru->get_search($search_query);
+        $data['page_title'] = 'Cari guru';
+        $data['page_name'] = 'guru';
         $data['search_query'] = $search_query;
         $data['start_number'] = 0;
 
@@ -165,59 +165,59 @@ class Web extends CI_Controller
 
     /*********************************************************************************************/
 
-    public function matakuliah()
+    public function matapelajaran()
     {
         $data = [];
 
-        $data['page_title'] = 'Modul Matakuliah';
-        $url = base_url().'web/matakuliah/';
-        $res = $this->m_matakuliah->num_page();
+        $data['page_title'] = 'Modul Mata Pelajaran';
+        $url = base_url().'web/matapelajaran/';
+        $res = $this->m_matapelajaran->num_page();
         $per_page = 20;
 
         $config = admin_paginate($url, $res, $per_page, 3);
         $this->pagination->initialize($config);
 
-        $this->m_matakuliah->limit = $per_page;
+        $this->m_matapelajaran->limit = $per_page;
 
         if ($this->uri->segment(3) == true) {
-            $this->m_matakuliah->offset = $this->uri->segment(3);
+            $this->m_matapelajaran->offset = $this->uri->segment(3);
         } else {
-            $this->m_matakuliah->offset = 0;
+            $this->m_matapelajaran->offset = 0;
         }
 
-        $data['start_number'] = $this->m_matakuliah->offset;
-        $this->m_matakuliah->sort = 'jenis,nama';
-        $this->m_matakuliah->order = 'ASC';
-        $data['rs_mk'] = $this->m_matakuliah->get();
+        $data['start_number'] = $this->m_matapelajaran->offset;
+        $this->m_matapelajaran->sort = 'jenis,nama';
+        $this->m_matapelajaran->order = 'ASC';
+        $data['rs_mp'] = $this->m_matapelajaran->get();
 
         if ($this->input->post('ajax')) {
-            $this->load->view('matakuliah_ajax', $data);
+            $this->load->view('matapelajaran_ajax', $data);
         } else {
-            $data['page_name'] = 'matakuliah';
+            $data['page_name'] = 'matapelajaran';
             $this->render_view($data);
         }
     }
 
-    public function matakuliah_add()
+    public function matapelajaran_add()
     {
         $data = [];
 
         if (!empty($_POST)) {
-            $this->form_validation->set_rules('kode_mk', 'Kode MK', 'xss_clean');
-            $this->form_validation->set_rules('nama', 'Nama', 'xss_clean|required|is_unique[matakuliah.nama]');
-            $this->form_validation->set_rules('sks', 'SKS', 'xss_clean|required|integer');
+            $this->form_validation->set_rules('kode_mp', 'Kode Mata Pelajaran', 'xss_clean');
+            $this->form_validation->set_rules('nama', 'Nama', 'xss_clean|required|is_unique[matapelajaran.nama]');
+            $this->form_validation->set_rules('beban', 'Beban', 'xss_clean|required|integer');
             $this->form_validation->set_rules('semester', 'Semester', 'xss_clean|required|integer');
             $this->form_validation->set_rules('jenis', 'Jenis', 'xss_clean|required');
 
             if ($this->form_validation->run() == true) {
-                $data['kode_mk'] = $this->input->post('kode_mk');
+                $data['kode_mp'] = $this->input->post('kode_mp');
                 $data['nama'] = $this->input->post('nama');
-                $data['sks'] = $this->input->post('sks');
+                $data['beban'] = $this->input->post('beban');
                 $data['semester'] = $this->input->post('semester');
                 $data['jenis'] = $this->input->post('jenis');
 
                 if (IS_TEST === 'FALSE') {
-                    $this->m_matakuliah->insert($data);
+                    $this->m_matapelajaran->insert($data);
                     $data['msg'] = 'Data Telah Berhasil Ditambahkan';
                     $data['clear_text_box'] = 'TRUE';
                 } else {
@@ -228,32 +228,32 @@ class Web extends CI_Controller
             }
         }
 
-        $data['page_name'] = 'matakuliah_add';
-        $data['page_title'] = 'Modul Tambah Matakuliah';
+        $data['page_name'] = 'matapelajaran_add';
+        $data['page_title'] = 'Modul Tambah Mata Pelajaran';
 
         $this->render_view($data);
     }
 
-    public function matakuliah_edit($kode)
+    public function matapelajaran_edit($kode)
     {
         $data = [];
 
         if (!empty($_POST)) {
-            $this->form_validation->set_rules('kode_mk', 'Kode MK', 'xss_clean');
+            $this->form_validation->set_rules('kode_mp', 'Kode Mata Pelajaran', 'xss_clean');
             $this->form_validation->set_rules('nama', 'Nama', 'xss_clean|required');
-            $this->form_validation->set_rules('sks', 'SKS', 'xss_clean|required|integer');
+            $this->form_validation->set_rules('beban', 'Beban', 'xss_clean|required|integer');
             $this->form_validation->set_rules('semester', 'Semester', 'xss_clean|required|integer');
             $this->form_validation->set_rules('jenis', 'Jenis', 'xss_clean|required');
 
             if ($this->form_validation->run() == true) {
-                $data['kode_mk'] = $this->input->post('kode_mk');
+                $data['kode_mp'] = $this->input->post('kode_mp');
                 $data['nama'] = $this->input->post('nama');
-                $data['sks'] = $this->input->post('sks');
+                $data['beban'] = $this->input->post('beban');
                 $data['semester'] = $this->input->post('semester');
                 $data['jenis'] = $this->input->post('jenis');
 
                 if (IS_TEST === 'FALSE') {
-                    $this->m_matakuliah->update($kode, $data);
+                    $this->m_matapelajaran->update($kode, $data);
                     $data['msg'] = 'Data telah berhasil dirubah';
                 } else {
                     $data['msg'] = 'WARNING: READ ONLY !';
@@ -263,42 +263,42 @@ class Web extends CI_Controller
             }
         }
 
-        $data['page_name'] = 'matakuliah_edit';
-        $data['page_title'] = 'Modul Matakuliah Edit';
-        $data['rs_mk'] = $this->m_matakuliah->get_by_kode($kode);
+        $data['page_name'] = 'matapelajaran_edit';
+        $data['page_title'] = 'Modul Mata Pelajaran Edit';
+        $data['rs_mp'] = $this->m_matapelajaran->get_by_kode($kode);
         $this->render_view($data);
     }
 
-    public function matakuliah_delete($kode)
+    public function matapelajaran_delete($kode)
     {
         if (IS_TEST === 'FALSE') {
-            $this->m_matakuliah->delete($kode);
-            $this->m_pengampu->delete_by_mk($kode);
+            $this->m_matapelajaran->delete($kode);
+            $this->m_pengampu->delete_by_mp($kode);
             $this->session->set_flashdata('msg', 'Data telah berhasil dihapus');
         } else {
             $this->session->set_flashdata('msg', 'WARNING: READ ONLY !');
         }
 
-        redirect(base_url().'web/matakuliah', 'reload');
+        redirect(base_url().'web/matapelajaran', 'reload');
     }
 
-    public function matakuliah_search()
+    public function matapelajaran_search()
     {
         $search_query = $this->input->post('search_query');
 
-        $data['rs_mk'] = $this->m_matakuliah->get_search($search_query);
-        $data['page_title'] = 'Cari Matakuliah';
-        $data['page_name'] = 'matakuliah';
+        $data['rs_mp'] = $this->m_matapelajaran->get_search($search_query);
+        $data['page_title'] = 'Cari Mata Pelajaran';
+        $data['page_name'] = 'matapelajaran';
         $data['search_query'] = $search_query;
         $data['start_number'] = 0;
 
         $this->render_view($data);
     }
 
-    public function option_matakuliah_ajax($matakuliah_tipe)
+    public function option_matapelajaran_ajax($matapelajaran_tipe)
     {
-        $data['rs_mk'] = $this->m_matakuliah->get_by_semester($matakuliah_tipe);
-        $this->load->view('option_matakuliah_ajax', $data);
+        $data['rs_mp'] = $this->m_matapelajaran->get_by_semester($matapelajaran_tipe);
+        $this->load->view('option_matapelajaran_ajax', $data);
     }
 
     /***********************************************************************************************/
@@ -319,7 +319,7 @@ class Web extends CI_Controller
 
         $data = [];
         if (!empty($_POST)) {
-            //$this->form_validation->set_rules('kode','Kode MK','xss_clean');
+            //$this->form_validation->set_rules('kode','Kode mp','xss_clean');
             $this->form_validation->set_rules('nama', 'Nama', 'xss_clean|required|is_unique[ruang.nama]');
             $this->form_validation->set_rules('kapasitas', 'Kapasitas', 'xss_clean|integer');
             $this->form_validation->set_rules('jenis', 'Jenis', 'xss_clean|required');
@@ -352,7 +352,7 @@ class Web extends CI_Controller
         /*kode,nama,kapasitas,jenis*/
         $data = [];
         if (!empty($_POST)) {
-            //$this->form_validation->set_rules('kode','Kode MK','xss_clean');
+            //$this->form_validation->set_rules('kode','Kode mp','xss_clean');
             $this->form_validation->set_rules('nama', 'Nama', 'xss_clean|required');
             $this->form_validation->set_rules('kapasitas', 'Kapasitas', 'xss_clean|integer');
 
@@ -652,14 +652,14 @@ class Web extends CI_Controller
 
         if (!empty($_POST)) {
             $this->form_validation->set_rules('semester_tipe', 'Semester', 'xss_clean|required');
-            $this->form_validation->set_rules('kode_mk', 'Matakuliah', 'xss_clean|required');
-            $this->form_validation->set_rules('kode_dosen', 'Dosen', 'xss_clean|required');
+            $this->form_validation->set_rules('kode_mp', 'Mata Pelajaran', 'xss_clean|required');
+            $this->form_validation->set_rules('kode_guru', 'Guru', 'xss_clean|required');
             $this->form_validation->set_rules('kelas', 'Kelas', 'xss_clean|required');
             $this->form_validation->set_rules('tahun_akademik', 'Tahun Akademik', 'xss_clean|required');
 
             if ($this->form_validation->run() == true) {
-                $data['kode_mk'] = $this->input->post('kode_mk');
-                $data['kode_dosen'] = $this->input->post('kode_dosen');
+                $data['kode_mp'] = $this->input->post('kode_mp');
+                $data['kode_guru'] = $this->input->post('kode_guru');
 
                 $data['tahun_akademik'] = $this->input->post('tahun_akademik');
 
@@ -695,8 +695,8 @@ class Web extends CI_Controller
             $semester_tipe = 1;
         }
 
-        $data['rs_mk'] = $this->m_matakuliah->get_by_semester($semester_tipe);
-        $data['rs_dosen'] = $this->m_dosen->get_all();
+        $data['rs_mp'] = $this->m_matapelajaran->get_by_semester($semester_tipe);
+        $data['rs_guru'] = $this->m_guru->get_all();
         $this->render_view($data);
     }
 
@@ -705,14 +705,14 @@ class Web extends CI_Controller
         $data = [];
 
         if (!empty($_POST)) {
-            $this->form_validation->set_rules('kode_mk', 'Matakuliah', 'xss_clean|required');
-            $this->form_validation->set_rules('kode_dosen', 'Dosen', 'xss_clean|required');
+            $this->form_validation->set_rules('kode_mp', 'Mata Pelajaran', 'xss_clean|required');
+            $this->form_validation->set_rules('kode_guru', 'Guru', 'xss_clean|required');
             $this->form_validation->set_rules('kelas', 'Kelas', 'xss_clean|required');
             $this->form_validation->set_rules('tahun_akademik', 'Tahun Akademik', 'xss_clean|required');
 
             if ($this->form_validation->run() == true) {
-                $data['kode_mk'] = $this->input->post('kode_mk');
-                $data['kode_dosen'] = $this->input->post('kode_dosen');
+                $data['kode_mp'] = $this->input->post('kode_mp');
+                $data['kode_guru'] = $this->input->post('kode_guru');
                 $data['kelas'] = $this->input->post('kelas');
                 $data['tahun_akademik'] = $this->input->post('tahun_akademik');
 
@@ -731,8 +731,8 @@ class Web extends CI_Controller
         $data['page_title'] = 'Modul Edit Pengampu';
         $data['rs_pengampu'] = $this->m_pengampu->get_by_kode($kode);
 
-        $data['rs_mk'] = $this->m_matakuliah->get_all();
-        $data['rs_dosen'] = $this->m_dosen->get_all();
+        $data['rs_mp'] = $this->m_matapelajaran->get_all();
+        $data['rs_guru'] = $this->m_guru->get_all();
 
         $this->render_view($data);
     }
@@ -768,21 +768,21 @@ class Web extends CI_Controller
     }
 
     /***************************************************************************/
-    public function waktu_tidak_bersedia($kode_dosen = null)
+    public function waktu_tidak_bersedia($kode_guru = null)
     {
         $data = [];
 
-        if ($kode_dosen == null) {
-            $kode_dosen = $this->db->query('SELECT kode FROM dosen ORDER BY nama LIMIT 1')->row()->kode;
+        if ($kode_guru == null) {
+            $kode_guru = $this->db->query('SELECT kode FROM guru ORDER BY nama LIMIT 1')->row()->kode;
         }
 
         if (array_key_exists('arr_tidak_bersedia', $_POST) && !empty($_POST['arr_tidak_bersedia'])) {
             if (IS_TEST === 'FALSE') {
-                $this->db->query("DELETE FROM waktu_tidak_bersedia WHERE kode_dosen = $kode_dosen");
+                $this->db->query("DELETE FROM waktu_tidak_bersedia WHERE kode_guru = $kode_guru");
 
                 foreach ($_POST['arr_tidak_bersedia'] as $tidak_bersedia) {
                     $waktu_tidak_bersedia = explode('-', $tidak_bersedia);
-                    $this->db->query("INSERT INTO waktu_tidak_bersedia(kode_dosen,kode_hari,kode_jam) VALUES($waktu_tidak_bersedia[0],$waktu_tidak_bersedia[1],$waktu_tidak_bersedia[2])");
+                    $this->db->query("INSERT INTO waktu_tidak_bersedia(kode_guru,kode_hari,kode_jam) VALUES($waktu_tidak_bersedia[0],$waktu_tidak_bersedia[1],$waktu_tidak_bersedia[2])");
                 }
 
                 $data['msg'] = 'Data telah berhasil diupdate';
@@ -790,18 +790,18 @@ class Web extends CI_Controller
                 $data['msg'] = 'WARNING: READ ONLY !';
             }
         } elseif (!empty($_POST['hide_me']) && empty($_POST['arr_tidak_bersedia'])) {
-            $this->db->query("DELETE FROM waktu_tidak_bersedia WHERE kode_dosen = $kode_dosen");
+            $this->db->query("DELETE FROM waktu_tidak_bersedia WHERE kode_guru = $kode_guru");
             $data['msg'] = 'Data telah berhasil diupdate';
         }
 
-        $data['rs_dosen'] = $this->m_dosen->get_all();
-        $data['rs_waktu_tidak_bersedia'] = $this->m_waktu_tidak_bersedia->get_by_dosen($kode_dosen);
+        $data['rs_guru'] = $this->m_guru->get_all();
+        $data['rs_waktu_tidak_bersedia'] = $this->m_waktu_tidak_bersedia->get_by_guru($kode_guru);
         $data['rs_hari'] = $this->m_hari->get();
         $data['rs_jam'] = $this->m_jam->get();
 
         $data['page_title'] = 'Waktu Tidak Bersedia';
         $data['page_name'] = 'waktu_tidak_bersedia';
-        $data['kode_dosen'] = $kode_dosen;
+        $data['kode_guru'] = $kode_guru;
         $this->render_view($data);
     }
 
@@ -834,12 +834,12 @@ class Web extends CI_Controller
                 $data['jumlah_generasi'] = $jumlah_generasi;
 
                 $rs_data = $this->db->query('SELECT   a.kode,'
-                                    .'       b.sks,'
-                                    .'       a.kode_dosen,'
+                                    .'       b.beban,'
+                                    .'       a.kode_guru,'
                                     .'       b.jenis '
                                     .'FROM pengampu a '
-                                    .'LEFT JOIN matakuliah b '
-                                    .'ON a.kode_mk = b.kode '
+                                    .'LEFT JOIN matapelajaran b '
+                                    .'ON a.kode_mp = b.kode '
                                     ."WHERE b.semester%2 = $jenis_semester "
                                     ."      AND a.tahun_akademik = '$tahun_akademik'");
 
@@ -861,7 +861,7 @@ class Web extends CI_Controller
 
                         for ($j = 0; $j < count($fitnessAfterMutation); $j++) {
                             if ($fitnessAfterMutation[$j] == 1) {
-                                $this->db->query('TRUNCATE TABLE jadwalkuliah');
+                                $this->db->query('TRUNCATE TABLE jadwalpelajaran');
                                 $jadwal_kuliah = [[]];
                                 $jadwal_kuliah = $genetik->GetIndividu($j);
 
@@ -870,7 +870,7 @@ class Web extends CI_Controller
                                     $kode_jam = intval($jadwal_kuliah[$k][1]);
                                     $kode_hari = intval($jadwal_kuliah[$k][2]);
                                     $kode_ruang = intval($jadwal_kuliah[$k][3]);
-                                    $this->db->query('INSERT INTO jadwalkuliah(kode_pengampu,kode_jam,kode_hari,kode_ruang) '.
+                                    $this->db->query('INSERT INTO jadwalpelajaran(kode_pengampu,kode_jam,kode_hari,kode_ruang) '.
                                                      "VALUES($kode_pengampu,$kode_jam,$kode_hari,$kode_ruang)");
                                 }
                                 $found = true;
@@ -894,13 +894,13 @@ class Web extends CI_Controller
 
         $data['page_name'] = 'penjadwalan';
         $data['page_title'] = 'Penjadwalan';
-        $data['rs_jadwal'] = $this->m_jadwalkuliah->get();
+        $data['rs_jadwal'] = $this->m_jadwalpelajaran->get();
         $this->render_view($data);
     }
 
     public function excel_report()
     {
-        $query = $this->m_jadwalkuliah->get();
+        $query = $this->m_jadwalpelajaran->get();
         if (!$query) {
             return false;
         }

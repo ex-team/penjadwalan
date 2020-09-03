@@ -10,7 +10,7 @@
    <div class="container-fluid">
          <?php if($this->session->flashdata('msg')) { ?>                        
             <div class="alert alert-error">
-              <button type="button" class="close" data-dismiss="alert">×</button>                
+              <button type="button" class="close" data-dismiss="alert">ï¿½</button>                
               <?php echo $this->session->flashdata('msg');?>
             </div>  
         <?php } ?>  
@@ -28,7 +28,7 @@
 		 <br>
 		<?php if($rs_hari->num_rows() === 0):?>
 		<div class="alert alert-error">
-            <button type="button" class="close" data-dismiss="alert">×</button>             
+            <button type="button" class="close" data-dismiss="alert">ï¿½</button>             
 			Tidak ada data.
         </div>  
 		<?php else: ?> 	
@@ -61,11 +61,7 @@
               </table>
            </div>
         <?php endif; ?>
-         <footer>
-            <hr />
-            <p class="pull-right">Design by <a href="http://www.portnine.com" target="_blank">Portnine</a></p>
-            <p>&copy; 2012 <a href="http://www.portnine.com" target="_blank">Portnine</a></p>
-         </footer>
+
       </div>
    </div>
 </div>
